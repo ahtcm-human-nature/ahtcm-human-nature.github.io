@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>安徽中医药大学人与自然协会 · 环保路上，我们一路同行</title>
 <meta name="description" content="安徽中医药大学人与自然协会，成立于2000年4月22日世界地球日，校级优秀社团。绿色当铺、落叶传情、环保知识竞赛……环保路上，我们一路同行。">
-<link rel="icon" type="image/jpeg" href="assets/emblem.jpg">
+<link rel="icon" type="image/png" href="assets/emblem-sm.png">
+<link rel="preload" as="image" href="assets/emblem-sm.png" fetchpriority="high">
 <style>
 /* ============ 设计基调：墨绿 60 / 奶白 30 / 芽绿点缀 10 · 编辑排版 · 大量留白 ============ */
 :root{
@@ -52,7 +53,7 @@ a{color:inherit;text-decoration:none}
 .links a:hover{color:var(--ink)}
 .links a.underline::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;background:var(--sprout);transform:scaleX(0);transform-origin:left;transition:.35s}
 .links a.underline:hover::after{transform:scaleX(1)}
-.cta-btn{position:relative;overflow:hidden;background:var(--ink);color:#eef7ef!important;padding:10px 24px;border-radius:999px;font-size:13.5px!important;letter-spacing:.1em;transition:color .35s;isolation:isolate}
+.cta-btn{position:relative;overflow:hidden;background:var(--ink);color:#eef7ef!important;padding:13px 30px;border-radius:999px;font-size:14.5px!important;line-height:1.2;letter-spacing:.12em;text-indent:.12em;transition:color .35s;isolation:isolate}
 .cta-btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--sprout);border-radius:inherit;transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.16,1,.3,1)}
 .cta-btn:hover{color:#fff!important}
 .cta-btn:hover::before{transform:scaleX(1)}
@@ -307,6 +308,43 @@ a{color:inherit;text-decoration:none}
 .cake-card .unit{font-size:13px;color:rgba(255,255,255,.6);letter-spacing:.3em}
 .cake-card .note{margin-top:18px;padding-top:16px;border-top:1px dashed rgba(255,255,255,.22);font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.8}
 
+/* ---------- 花语墙：万物生长 ---------- */
+#flori{background:radial-gradient(130% 100% at 50% 112%,#143a24 0%,#0c2415 52%,#07150c 100%);padding:clamp(90px,12vw,150px) 0 0;overflow:hidden}
+#flori .eyebrow{color:#7fbc95;border-color:rgba(143,208,168,.35)}
+#flori .sec-title{color:#f2f8f3}
+#flori .sec-lead{color:rgba(255,255,255,.62)}
+.flori-hint{margin-top:18px;font-size:12.5px;letter-spacing:.22em;color:#6fa383;text-align:center}
+.field{position:relative;height:clamp(460px,58vw,620px);max-width:1080px;margin:clamp(30px,4vw,52px) auto 0}
+.ground{position:absolute;bottom:-2px;left:-6%;width:112%;pointer-events:none}
+.spore{position:absolute;bottom:16px;width:5px;height:5px;border-radius:50%;background:rgba(158,224,184,.5);animation:rise var(--rd,9s) linear var(--dl,0s) infinite;pointer-events:none}
+@keyframes rise{0%{transform:translateY(0) scale(.5);opacity:0}14%{opacity:.65}82%{opacity:.35}100%{transform:translateY(-56vh) scale(1);opacity:0}}
+.fc{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,46px) scale(.35);opacity:0;transition:transform 1.05s cubic-bezier(.16,1,.3,1),opacity .8s ease;transition-delay:calc(var(--i)*.16s);cursor:pointer}
+.fc.grow{transform:translate(-50%,0) scale(1);opacity:1}
+.fc.grow:hover .fc-in{transform:scale(1.06)}
+.bob{animation:fbob var(--d,5s) ease-in-out var(--dl,0s) infinite alternate}
+@keyframes fbob{to{transform:translateY(-9px)}}
+.fc-in{position:relative;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.16,1,.3,1);display:grid}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc.flip.grow:hover .fc-in{transform:rotateY(180deg) scale(1.06)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:14px 28px;display:flex;align-items:center;gap:12px;white-space:nowrap}
+.face.front{background:rgba(244,251,245,.08);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(6px);box-shadow:0 18px 42px -18px rgba(0,0,0,.65)}
+.face.front i{font-style:normal;font-size:15px;color:#8fd0a8}
+.face.front b{font-family:var(--serif);font-weight:700;font-size:19px;color:#eaf5ec;letter-spacing:.1em}
+.face.back{background:var(--sprout);transform:rotateY(180deg);justify-content:center;box-shadow:0 18px 42px -16px rgba(63,160,107,.55)}
+.face.back span{font-size:14px;font-weight:700;color:#06331c;letter-spacing:.05em}
+.fc-lg{z-index:3}
+.fc-lg .face.front{padding:15px 26px}
+.fc-lg .face.front i{font-size:18px}
+.fc-lg .face.front b{font-size:23px}
+.fc-lg .face.back span{font-size:16.5px}
+.join-btns .btn-ink{padding:20px 48px;font-size:17.5px}
+.join-btns .btn-line{padding:20px 44px;font-size:16.5px}
+@media(max-width:640px){
+  .field{height:auto;display:flex;flex-wrap:wrap;gap:14px 12px;justify-content:center;padding:44px 18px 0}
+  .fc{position:static;transform:none;opacity:0}
+  .fc.grow{transform:none}
+  .ground{display:none}
+}
 /* ---------- footer ---------- */
 footer{background:#08160d;color:#87a592;padding:64px 0 30px;text-align:center}
 .f-brand{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:800;font-size:17px;letter-spacing:.05em}
@@ -362,7 +400,7 @@ footer{background:#08160d;color:#87a592;padding:64px 0 30px;text-align:center}
 /* 尊重减弱动态偏好 */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .reveal,.tl-item{opacity:1!important;transform:none!important}
+  .reveal,.tl-item,.fc{opacity:1!important;transform:none!important}
 }
 </style>
 </head>
@@ -372,7 +410,7 @@ footer{background:#08160d;color:#87a592;padding:64px 0 30px;text-align:center}
 <nav class="nav over-hero" id="nav">
   <div class="wrap nav-in">
     <a href="#top" class="brand">
-      <img src="assets/emblem.jpg" alt="安徽中医药大学人与自然协会会徽">
+      <img src="assets/emblem-sm.png" alt="安徽中医药大学人与自然协会会徽">
       <span>人与自然协会<small>HUMAN &amp; NATURE · AHTCM</small></span>
     </a>
     <button class="burger" id="burger" aria-label="菜单">☰</button>
@@ -380,6 +418,7 @@ footer{background:#08160d;color:#87a592;padding:64px 0 30px;text-align:center}
       <a href="#about" class="underline">关于协会</a>
       <a href="#acts" class="underline">特色活动</a>
       <a href="#galer" class="underline">活动掠影</a>
+      <a href="#flori" class="underline">花语</a>
       <a href="#team" class="underline">组织架构</a>
       <a href="#join" class="cta-btn">加入我们</a>
     </div>
@@ -432,7 +471,7 @@ footer{background:#08160d;color:#87a592;padding:64px 0 30px;text-align:center}
 <!-- ================= MOTTO + 河流时间线 ================= -->
 <section id="motto">
   <div class="wrap motto-in reveal">
-    <img class="motto-emblem" src="assets/emblem.jpg" alt="人与自然协会会徽">
+    <img class="motto-emblem" src="assets/emblem-sm.png" alt="人与自然协会会徽">
     <div class="q">「环保路上，<em>我们一路同行</em>。」</div>
     <div class="src">安徽中医药大学人与自然协会 · 协会理念</div>
     <div class="river">
@@ -465,30 +504,30 @@ footer{background:#08160d;color:#87a592;padding:64px 0 30px;text-align:center}
       </article>
       <article class="act reveal">
         <div class="act-img"><img src="assets/craft-group.jpg" alt="落叶传情·押花书签" loading="lazy"><span class="act-num">02</span></div>
-        <div class="act-body"><h3><small>AUTUMN LEAVES</small>落叶传情</h3><p>秋日限定：采集落叶，写下祝福与交友宣言，互相抽取或贴上展板。一片落叶、一段缘分，让秋天多一份温柔的仪式感。</p></div>
+        <div class="act-body"><h3><small>AUTUMN LEAVES</small>落叶传情</h3><p>秋日限定：采集落叶与落花，制成押花书签，写下祝福与交友宣言，互相抽取或贴上展板。一片落叶、一段缘分，让秋天多一份温柔的仪式感。</p></div>
       </article>
       <article class="act reveal">
         <div class="act-img"><img src="assets/earth-day-banner.jpg" alt="世界地球日活动" loading="lazy"><span class="act-num">03</span></div>
         <div class="act-body"><h3><small>EARTH DAY · 4.22</small>地球日活动</h3><p>与华佗爱心社等社团合办的世界地球日主题活动，环保问答、趣味游戏轮番上阵——这一天，也是协会的生日庆典。</p></div>
       </article>
       <article class="act reveal">
-        <div class="act-img"><img src="assets/exchange-site.jpg" alt="环保知识竞赛" loading="lazy"><span class="act-num">04</span></div>
+        <div class="act-img"><img src="assets/quiz-hall.jpg" alt="环保知识竞赛·答题现场" loading="lazy"><span class="act-num">04</span></div>
         <div class="act-body"><h3><small>ECO QUIZ</small>环保知识竞赛</h3><p>线上答题普及环境知识、传播绿色理念。成绩优秀者可获证书，校内排名前二十的会员有机会晋级更高级别比赛。</p></div>
       </article>
       <article class="act reveal">
-        <div class="act-img"><img src="assets/cardboard-house.jpg" alt="端午寄情·手工" loading="lazy"><span class="act-num">05</span></div>
-        <div class="act-body"><h3><small>DRAGON BOAT</small>端午寄情</h3><p>端午制作香囊、包粽子，把环保元素融入传统节日——旧物巧手改造，用双手传承文化与绿色理念。</p></div>
+        <div class="act-img"><img src="assets/plant-group.jpg" alt="绿植工艺小组·多肉盆栽" loading="lazy"><span class="act-num">05</span></div>
+        <div class="act-body"><h3><small>GREEN CRAFT</small>绿植工艺</h3><p>绿植小组亲手种养多肉与绿植，工艺小组巧手制作押花书签、旧物改造——从「绿色当铺」收回的种子，在这里长成满架春意。</p></div>
       </article>
       <article class="act reveal">
-        <div class="act-img"><img src="assets/campus-clean.jpg" alt="漂流瓶·校际联动" loading="lazy"><span class="act-num">06</span></div>
-        <div class="act-body"><h3><small>DRIFT BOTTLE</small>漂流瓶</h3><p>联合外校开展：把写好的信放进瓶中，在各校之间传递，也可随机抽取交友——一封信，连接不同校园里的同频灵魂。</p></div>
+        <div class="act-img"><img src="assets/jianyue-action.jpg" alt="「捡约」行动·弯腰拾起洁净" loading="lazy"><span class="act-num">06</span></div>
+        <div class="act-body"><h3><small>PICK-UP ACTION</small>「捡约」行动</h3><p>定期相约校园与湖畔，弯腰拾起散落的垃圾——捡起的是垃圾，留下的是洁净。走过之处，绿意更清。</p></div>
       </article>
     </div>
     <div class="routine reveal">
       <div><span class="tag">🥗</span>每周三光盘打卡</div>
       <div><span class="tag">🎉</span>每月一次团建</div>
+      <div><span class="tag">🎋</span>端午寄情 · 漂流瓶</div>
       <div><span class="tag">🎓</span>环保讲座与培训</div>
-      <div><span class="tag">🪴</span>绿植 × 工艺 双小组</div>
     </div>
   </div>
 </section>
@@ -510,9 +549,9 @@ footer{background:#08160d;color:#87a592;padding:64px 0 30px;text-align:center}
         <div class="tl-item up"><div class="ph"><img src="assets/mobilization.jpg" alt="新学期动员大会 · 全家福" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">相识 · 动员大会</span><span class="cap">新学期，我们第一次见面</span></div>
         <div class="tl-item down"><div class="ph"><img src="assets/mobilization-speaker.jpg" alt="动员大会 · 部门职能介绍" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">相识 · 部门介绍</span><span class="cap">找到属于自己的位置</span></div>
         <div class="tl-item up"><div class="ph"><img src="assets/green-pawn-shop.jpg" alt="绿色当铺 · 快递纸箱回收现场" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">开张 · 绿色当铺</span><span class="cap">快递纸箱，排队入当</span></div>
-        <div class="tl-item down"><div class="ph"><img src="assets/bottle-exchange.jpg" alt="绿色当铺 · 瓶子称重兑换" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">开张 · 称重兑换</span><span class="cap">瓶子也能换春天</span></div>
+        <div class="tl-item down"><div class="ph"><img src="assets/bottle-exchange.jpg" alt="绿色当铺 · 捆扎回收瓶罐" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">开张 · 瓶罐回收</span><span class="cap">捆扎瓶罐，等待入当</span></div>
         <div class="tl-item up"><div class="ph"><img src="assets/exchange-site.jpg" alt="绿色当铺 · 兑换登记处" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">开张 · 兑换登记</span><span class="cap">盖一个章，领一盆绿</span></div>
-        <div class="tl-item down"><div class="ph"><img src="assets/handcraft-teaching.jpg" alt="绿植小组 · 多肉养护教学" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">指尖 · 绿植教学</span><span class="cap">多肉怎么养？手把手教</span></div>
+        <div class="tl-item down"><div class="ph"><img src="assets/handcraft-teaching.jpg" alt="绿植小组 · 多肉盆栽" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">指尖 · 多肉世界</span><span class="cap">一整桌慢慢长大的小盆栽</span></div>
         <div class="tl-item up"><div class="ph"><img src="assets/plant-group.jpg" alt="绿植小组 · 养育中的小多肉" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">指尖 · 亲手种下</span><span class="cap">小多肉们慢慢长大</span></div>
         <div class="tl-item down"><div class="ph"><img src="assets/craft-works.jpg" alt="绿植小组 · 满架的春意" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">指尖 · 满架春意</span><span class="cap">一整个架子的春天</span></div>
         <div class="tl-item up"><div class="ph"><img src="assets/craft-group.jpg" alt="工艺小组 · 押花书签作品" loading="lazy"><span class="zoom">⤢</span></div><span class="node"></span><span class="tag">指尖 · 押花书签</span><span class="cap">把秋天夹进书页里</span></div>
@@ -635,11 +674,98 @@ footer{background:#08160d;color:#87a592;padding:64px 0 30px;text-align:center}
   </div>
 </section>
 
+<!-- ================= FLORI · 花语墙 ================= -->
+<section id="flori">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center">
+      <span class="eyebrow" style="justify-content:center">FLORA · 花语</span>
+      <h2 class="sec-title">万物生长，<em>每一株都有自己的话</em></h2>
+      <p class="sec-lead" style="margin-left:auto;margin-right:auto">这些字从土地里萌发，轻轻漂浮在暮色里。<br>点一下，把它翻过来——听听它想对你说的话。</p>
+      <p class="flori-hint reveal">✿ &nbsp;轻触卡片 · 翻看花语&nbsp; ✿</p>
+    </div>
+  </div>
+  <div class="field" id="field">
+    <div class="spore" style="--rd:8s;left:12%"></div>
+    <div class="spore" style="--rd:11s;--dl:3s;left:26%"></div>
+    <div class="spore" style="--rd:9.5s;--dl:1.4s;left:41%"></div>
+    <div class="spore" style="--rd:12s;--dl:5s;left:58%"></div>
+    <div class="spore" style="--rd:8.5s;--dl:2.2s;left:72%"></div>
+    <div class="spore" style="--rd:10s;--dl:6.5s;left:86%"></div>
+
+    <div class="fc" style="--x:8%;--y:32%;--i:0;--d:5.2s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>向日葵</b></div>
+        <div class="face back"><span>向阳而生，追光而行</span></div>
+      </div></div>
+    </div>
+    <div class="fc" style="--x:20%;--y:62%;--i:1;--d:6.1s;--dl:.8s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>风铃草</b></div>
+        <div class="face back"><span>感谢相遇，温柔以待</span></div>
+      </div></div>
+    </div>
+    <div class="fc" style="--x:34%;--y:14%;--i:2;--d:4.6s;--dl:1.6s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>三叶草</b></div>
+        <div class="face back"><span>平凡里藏着小幸运</span></div>
+      </div></div>
+    </div>
+    <div class="fc" style="--x:46%;--y:44%;--i:3;--d:5.8s;--dl:.4s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>蒲公英</b></div>
+        <div class="face back"><span>把希望撒向远方</span></div>
+      </div></div>
+    </div>
+    <div class="fc" style="--x:58%;--y:16%;--i:4;--d:6.4s;--dl:2s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>雏菊</b></div>
+        <div class="face back"><span>藏在心底的纯真</span></div>
+      </div></div>
+    </div>
+    <div class="fc" style="--x:68%;--y:60%;--i:5;--d:5s;--dl:1s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>满天星</b></div>
+        <div class="face back"><span>甘当配角的浪漫</span></div>
+      </div></div>
+    </div>
+    <div class="fc" style="--x:79%;--y:26%;--i:6;--d:6.8s;--dl:2.8s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>栀子花</b></div>
+        <div class="face back"><span>守候整个夏天的约定</span></div>
+      </div></div>
+    </div>
+    <div class="fc" style="--x:90%;--y:50%;--i:7;--d:5.5s;--dl:.6s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>薄荷</b></div>
+        <div class="face back"><span>愿与你再度重逢</span></div>
+      </div></div>
+    </div>
+    <div class="fc fc-lg" style="--x:58%;--y:82%;--i:8;--d:6.2s;--dl:1.8s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>冬青</b></div>
+        <div class="face back"><span>不畏严寒，守望常青</span></div>
+      </div></div>
+    </div>
+    <div class="fc fc-lg" style="--x:12%;--y:80%;--i:9;--d:7.2s;--dl:3.4s">
+      <div class="bob"><div class="fc-in">
+        <div class="face front"><i>✿</i><b>苔花</b></div>
+        <div class="face back"><span>如米小，也学牡丹开</span></div>
+      </div></div>
+    </div>
+
+    <svg class="ground" viewBox="0 0 1200 110" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,64 C180,26 400,92 640,58 C880,28 1050,84 1200,48 L1200,110 L0,110 Z" fill="#0a1d10"/>
+      <path d="M0,64 C180,26 400,92 640,58 C880,28 1050,84 1200,48" fill="none" stroke="#1c4a2c" stroke-width="2"/>
+      <path d="M120,70 q4,-16 -3,-26 M126,70 q8,-12 16,-14 M460,62 q4,-15 -2,-24 M466,62 q9,-11 17,-12 M760,66 q4,-14 -3,-22 M766,66 q8,-10 15,-11 M1020,74 q4,-15 -2,-24 M1026,74 q9,-12 17,-13" stroke="#2c6a41" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+</section>
+
 <!-- ================= FOOTER ================= -->
 <footer>
   <div class="wrap">
     <div class="f-brand">
-      <img src="assets/emblem.jpg" alt="安徽中医药大学人与自然协会会徽">
+      <img src="assets/emblem-sm.png" alt="安徽中医药大学人与自然协会会徽">
       安徽中医药大学人与自然协会
     </div>
     <div class="f-q">环保路上，我们一路同行。</div>
@@ -807,6 +933,15 @@ addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;
   if(e.key==='ArrowLeft')show(cur-1);
   if(e.key==='ArrowRight')show(cur+1);
 });
+// ---- 花语墙：从土地萌发 + 点击翻面 ----
+const ffield=document.getElementById('field');
+const fio=new IntersectionObserver(es=>{
+  if(!es.some(e=>e.isIntersecting))return;
+  fio.disconnect();
+  document.querySelectorAll('.fc').forEach(c=>c.classList.add('grow'));
+},{threshold:.25});
+fio.observe(ffield);
+document.querySelectorAll('.fc').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('flip')));
 // countdown to next Apr 22
 function cd(){
   const now=new Date();let t=new Date(now.getFullYear(),3,22);
