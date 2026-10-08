@@ -98,7 +98,13 @@ a{color:inherit;text-decoration:none}
 .egg.ping{animation:eggPop .72s cubic-bezier(.34,1.56,.64,1)}
 @keyframes eggPop{0%{transform:scale(1)}32%{transform:scale(1.24) rotate(-2deg)}62%{transform:scale(.97)}100%{transform:scale(1)}}
 /* 收集提示条 */
-.egg-toast{position:fixed;left:50%;bottom:clamp(20px,4vh,40px);z-index:200;display:flex;align-items:center;gap:11px;padding:11px 18px 11px 14px;border-radius:13px;background:linear-gradient(180deg,#fdf8ea,#f3e4c4);border:2.5px solid var(--wood-dk);box-shadow:inset 0 0 0 2px rgba(255,255,255,.75),0 6px 0 rgba(92,58,30,.22),0 22px 40px -18px rgba(40,24,10,.6);opacity:0;pointer-events:none;transform:translate(-50%,22px) scale(.94);transition:opacity .32s ease,transform .5s cubic-bezier(.16,1,.3,1)}
+/* 两类吐司（图鉴 / 成就）都会在底部正中弹出，且常在同一瞬间触发
+   （例如收进最后一个字词时，图鉴与「殿堂之主」一起亮）。
+   原来一个 bottom:26px、一个 clamp(20px,4vh,40px)，高视口下只差几像素 → 必然叠在一起。
+   现在统一由 window.__toastLane 做纵向排队：同一时刻只显示一条，
+   其余的依次往下顺延，绝不会互相压住。 */
+.toast-lane-up{--toast-lane:1}
+.egg-toast{position:fixed;left:50%;bottom:calc(clamp(20px,4vh,40px) + var(--toast-lane,0) * 62px);z-index:200;display:flex;align-items:center;gap:11px;padding:11px 18px 11px 14px;border-radius:13px;background:linear-gradient(180deg,#fdf8ea,#f3e4c4);border:2.5px solid var(--wood-dk);box-shadow:inset 0 0 0 2px rgba(255,255,255,.75),0 6px 0 rgba(92,58,30,.22),0 22px 40px -18px rgba(40,24,10,.6);opacity:0;pointer-events:none;transform:translate(-50%,22px) scale(.94);transition:opacity .32s ease,transform .5s cubic-bezier(.16,1,.3,1),bottom .32s cubic-bezier(.16,1,.3,1)}
 .egg-toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
 .egg-toast i{width:34px;height:34px;flex:none;border-radius:9px;display:grid;place-items:center;background:radial-gradient(circle at 36% 30%,#fff,#ecdcb6);border:2px solid var(--wood-dk);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.8)}
 .egg-toast i svg{width:20px;height:20px;fill:#5ec98d}
@@ -330,7 +336,7 @@ body.sanctuary .sc-sing{animation:scSing 3.4s ease-out 1.5s 1}
 .pd-no{background:#f6f1e2;border-color:#bcae90;color:#6b5b40}
 .pd-no:hover{background:#ece5d2}
 
-/* ============ 地狱把妹王式迷阵：走到三位魔界少女身边 ============ */
+/* ============ 地狱把妹王式迷阵：走到三位魔界生物身边 ============ */
 /* 高于行囊(205)，低于终章信(240 之上故用 253/254) */
 .maze{position:fixed;inset:0;z-index:253;display:grid;place-items:center;padding:20px;
   background:radial-gradient(80% 70% at 50% 34%,#2a1626,#150a12 74%);overflow-y:auto}
@@ -356,6 +362,15 @@ body.sanctuary .sc-sing{animation:scSing 3.4s ease-out 1.5s 1}
 .mz-new{background:linear-gradient(180deg,#c794bd,#a6719c);border-color:#8d6a86;color:#fff}
 .mz-new:hover{transform:translateY(-2px);box-shadow:0 6px 16px -8px rgba(110,60,100,.8)}
 .mz-new:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+/* 结局二选一：喝完 / 先走。两个都不惩罚，别让人以为选错 */
+.mz-choices{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}
+.mz-choices button{flex:1;min-width:130px;padding:9px 10px;border-radius:12px;font:700 12px/1.4 var(--sans);cursor:pointer;border:2px solid #8d6a86;transition:.2s}
+.mz-ch-stay{background:linear-gradient(180deg,#e6d3e6,#d3b9d3);border-color:#8d6a86;color:#4a2f44}
+.mz-ch-stay:hover{transform:translateY(-2px);box-shadow:0 6px 16px -8px rgba(110,60,100,.8)}
+.mz-ch-walk{background:linear-gradient(180deg,#cde0ea,#aecbdc);border-color:#7f9cad;color:#274553}
+.mz-ch-walk:hover{transform:translateY(-2px);box-shadow:0 6px 16px -8px rgba(70,110,130,.8)}
+.mz-choices button:focus-visible{outline:2px solid #6b4463;outline-offset:2px}
+.mz-tie{display:block;margin-top:9px;font-size:11px;line-height:1.65;color:#7c5f78;letter-spacing:.03em}
 .maze-hint{margin-top:11px;font-size:11px;color:#8d7192;line-height:1.75;text-align:center}
 
 /* ============ 黑蒂斯式「再来一次」：死亡不是终点 ============ */
@@ -691,11 +706,11 @@ body.sanctuary .altar::after{opacity:1}
 @keyframes hintFade{0%,100%{opacity:.3}50%{opacity:.7}}
 
 /* 成就达成 / 彩蛋发现时的小横幅 */
-.ach-toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);z-index:210;opacity:0;
+.ach-toast{position:fixed;left:50%;bottom:calc(clamp(20px,4vh,40px) + var(--toast-lane,0) * 62px);transform:translate(-50%,20px);z-index:210;opacity:0;
   pointer-events:none;display:flex;align-items:center;gap:11px;padding:11px 20px 11px 13px;border-radius:14px;
   background:linear-gradient(180deg,rgba(20,30,50,.97),rgba(12,18,32,.97));
   border:1.5px solid rgba(180,210,255,.4);box-shadow:0 16px 40px -14px rgba(0,0,0,.75),0 0 44px -14px rgba(140,190,255,.7);
-  transition:opacity .45s ease,transform .45s cubic-bezier(.34,1.42,.64,1)}
+  transition:opacity .45s ease,transform .45s cubic-bezier(.34,1.42,.64,1),bottom .32s cubic-bezier(.16,1,.3,1)}
 .ach-toast.on{opacity:1;transform:translate(-50%,0)}
 .ach-toast>i{width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:10px;
   background:linear-gradient(180deg,#7d9fd6,#3f5f8f);box-shadow:inset 0 1px 0 rgba(210,230,255,.45)}
@@ -727,10 +742,26 @@ body.sanctuary .altar::after{opacity:1}
 /* 靠右边的信物，气泡改为右对齐，免得在窄屏上被 section 的 overflow 裁掉 */
 .tk-spring .tk-tip,.tk-autumn .tk-tip{left:auto;right:0;transform:translateY(6px)}
 .tk-spring .tk-tip.show,.tk-autumn .tk-tip.show{transform:translateY(0)}
-.tk-spring{top:16px;right:18px}
-.tk-summer{top:16px;left:18px}
-.tk-autumn{bottom:16px;right:20px}
-.tk-winter{bottom:16px;left:20px}
+/* 四颗信物要让开两侧的常驻元素：
+     右侧是固定四季罗盘（z96，占 right 10~22px + 宽 60px），
+     左下是固定回顶按钮与行囊 dock（占 left 12~22px + 宽 52px）。
+     靠外侧摆会被它们压住 → 玩家看着发光却点不到，这里统一往里收。 */
+.tk-spring{top:16px;right:92px}
+.tk-summer{top:16px;left:92px}
+.tk-autumn{bottom:16px;right:94px}
+.tk-winter{bottom:16px;left:94px}
+/* 罗盘在 ≥1280px 才出现；窄屏它 display:none，此时信物可以贴回边缘。
+   但左下的回顶按钮/行囊 dock 在所有宽度都在，left 一侧仍需留出。 */
+@media(max-width:1279px){
+  .tk-spring{right:18px}
+  .tk-autumn{right:20px}
+  .tk-summer{left:78px}
+  .tk-winter{left:78px}
+}
+@media(max-width:640px){
+  .tk-summer{left:66px}
+  .tk-winter{left:66px}
+}
 @keyframes tkPulse{0%,100%{opacity:.34}50%{opacity:.6}}
 @media(prefers-reduced-motion:reduce){.tk-spot{animation:none;opacity:.5}.tk-spot .tk:hover{transform:none}}
 
@@ -2436,7 +2467,7 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
   <symbol id="px-snail" viewBox="0 0 12 12"><rect x="1" y="8" width="9" height="2" fill="#caa06a"/><rect x="0" y="9" width="2" height="1" fill="#caa06a"/><rect x="2" y="6" width="2" height="2" fill="#e0b47e"/><rect x="3" y="3" width="5" height="5" fill="#d98b4a"/><rect x="3" y="3" width="5" height="1" fill="#efae6a"/><rect x="4" y="4" width="3" height="3" fill="#c2763a"/><rect x="5" y="5" width="1" height="1" fill="#efae6a"/><rect x="9" y="5" width="1" height="2" fill="#caa06a"/><rect x="10" y="4" width="1" height="1" fill="#2a2018"/></symbol>
   <!-- 刺猬 -->
   <symbol id="px-hedgehog" viewBox="0 0 12 12"><rect x="3" y="2" width="1" height="1" fill="#6b4523"/><rect x="5" y="1" width="1" height="1" fill="#6b4523"/><rect x="7" y="2" width="1" height="1" fill="#6b4523"/><rect x="2" y="3" width="8" height="1" fill="#7a5430"/><rect x="2" y="4" width="8" height="4" fill="#8a6038"/><rect x="3" y="8" width="6" height="2" fill="#caa06a"/><rect x="2" y="5" width="6" height="3" fill="#9a7048"/><rect x="4" y="6" width="1" height="1" fill="#2a2018"/><rect x="6" y="6" width="1" height="1" fill="#2a2018"/><rect x="4" y="7" width="3" height="1" fill="#3a2418"/><rect x="9" y="6" width="1" height="1" fill="#2a2018"/></symbol>
-  <!-- 魔界少女三人组（地狱把妹王式） -->
+  <!-- 魔界生物三人组（地狱把妹王式） -->
   <symbol id="px-doll" viewBox="0 0 12 12"><rect x="4" y="1" width="4" height="1" fill="#6b4463"/><rect x="3" y="2" width="6" height="1" fill="#c794bd"/><rect x="4" y="3" width="4" height="3" fill="#f3d8e6"/><rect x="5" y="4" width="1" height="1" fill="#2a1a24"/><rect x="7" y="4" width="1" height="1" fill="#2a1a24"/><rect x="3" y="6" width="6" height="4" fill="#c794bd"/><rect x="2" y="7" width="1" height="2" fill="#a6719c"/><rect x="9" y="7" width="1" height="2" fill="#a6719c"/><rect x="4" y="10" width="2" height="2" fill="#6b4463"/><rect x="6" y="10" width="2" height="2" fill="#6b4463"/></symbol>
   <symbol id="px-coffee" viewBox="0 0 12 12"><rect x="3" y="5" width="6" height="5" fill="#f3ece0"/><rect x="3" y="5" width="6" height="1" fill="#c9b79a"/><rect x="4" y="6" width="4" height="1" fill="#6b4463"/><rect x="4" y="8" width="4" height="1" fill="#c9b79a"/><rect x="9" y="6" width="2" height="1" fill="#e3d6c2"/><rect x="10" y="7" width="1" height="2" fill="#e3d6c2"/><rect x="5" y="3" width="1" height="2" fill="#c9b79a"/><rect x="7" y="2" width="1" height="3" fill="#c9b79a"/></symbol>
   <symbol id="px-vessel" viewBox="0 0 12 12"><rect x="4" y="1" width="4" height="2" fill="#8d6a86"/><rect x="5" y="3" width="2" height="1" fill="#a6719c"/><rect x="4" y="4" width="4" height="1" fill="#c794bd"/><rect x="3" y="5" width="6" height="4" fill="#c794bd"/><rect x="4" y="6" width="4" height="1" fill="#f3d8e6"/><rect x="5" y="7" width="2" height="1" fill="#f3d8e6"/><rect x="4" y="9" width="1" height="3" fill="#6b4463"/><rect x="7" y="9" width="1" height="3" fill="#6b4463"/><rect x="2" y="10" width="8" height="1" fill="#4a2f44"/></symbol>
@@ -3540,7 +3571,7 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
       <button type="button" class="mz-new" id="mzAgain">再来一次</button>
       <button type="button" id="mzLeave">先歇会儿</button>
     </div>
-    <p class="maze-hint">走到三位魔界少女身边各说一句话。方向键或点格子都行，撞墙只是回到门口。</p>
+    <p class="maze-hint">走到三位魔界生物身边各说一句话。方向键或点格子都行，撞墙只是回到门口。</p>
   </div>
 </div>
 <div class="hades-flash" id="hadesFlash" hidden>
@@ -3591,7 +3622,7 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
   /* REQUIRED 是森林重生的门槛（与原 10 颗一致，不让放过刺猬的玩家永远集不满）；
    BONUS 是额外的光籽，只多亮一格、不参与判定，免得玩家错过魔界门就卡住收尾。 */
   const REQUIRED=['sprout','dew','ginkgo','snow','seasons','constell','fourqi','cipher','beast','codex'];
-  const BONUS=['mercy','dolls'];
+  const BONUS=['mercy','dolls','maze_walk'];
   const SEEDS=REQUIRED.concat(BONUS);
   let have={};try{have=JSON.parse(localStorage.getItem(SK)||'{}')||{}}catch(_){}
   if(typeof have!=='object')have={};
@@ -3648,6 +3679,7 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
     // 放过刺猬的玩家不会写 hrn_beast_v1，但「遇见」同样算数，帮他补回光籽
     if(localStorage.getItem('hrn_pardon_v1')==='1')grant('beast');
     if(localStorage.getItem('hrn_maze_v1')==='1')grant('dolls');
+    if(localStorage.getItem('hrn_maze_walk_v1')==='1')grant('maze_walk');
   }catch(_){}};
   recompute();paint();
   window.__spirit=grant;
@@ -4250,9 +4282,9 @@ document.querySelectorAll('.fc').forEach(c=>c.addEventListener('click',()=>c.cla
   const say=(t,s)=>{
     toast.querySelector('b').textContent=t;
     toast.querySelector('span').textContent=s;
-    toast.classList.add('on');
-    clearTimeout(toastT);
-    toastT=setTimeout(()=>toast.classList.remove('on'),2600);
+    // 交给全局队列排队，避免和成就提示叠在一起
+    if(window.__toastShow){window.__toastShow(toast,2600)}
+    else{toast.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>toast.classList.remove('on'),2600);}
   };
   // 渲染图鉴
   const cells={};
@@ -5292,7 +5324,9 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
     {id:'mercy',  n:'放过',     p:'px-cat-spring',x:56, y:20, sz:24,
      w:'你本可以把它收进行囊，但你让它走了。通关有很多种，不必非得把它据为己有。'},
     {id:'dolls',  n:'魔界客',   p:'px-star',  x:70, y:14, sz:30,
-     w:'你走到三个人身边各说了一句话。她们不记仇，撞了墙也欢迎再来。'}
+     w:'你走到三位魔界生物身边各说了一句话。它们不记仇，撞了墙也欢迎再来。'},
+    {id:'maze_walk', n:'不留恋',  p:'px-drop', x:78, y:44, sz:22,
+     w:'咖啡还热着，你还是推门出去了。有些地方不必久留，来过就够了。'}
   ];
   const AKEY='hrn_ach_v1';
   let got={};
@@ -5308,8 +5342,9 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
       +'<div><b></b><span></span></div>';
     aToast.querySelector('b').textContent=t;
     aToast.querySelector('span').textContent=s;
-    aToast.classList.add('on');
-    clearTimeout(aT);aT=setTimeout(()=>aToast.classList.remove('on'),3400);
+    // 交给全局队列排队，避免和图鉴提示叠在一起
+    if(window.__toastShow){window.__toastShow(aToast,3400)}
+    else{aToast.classList.add('on');clearTimeout(aT);aT=setTimeout(()=>aToast.classList.remove('on'),3400);}
   };
   const arBtn=document.getElementById('achReset');
   // 星位：未解锁只画一颗暗淡的星，什么字都不给
@@ -5698,7 +5733,7 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
     sanct:()=>{if(window.__sanctDown)window.__sanctDown()}
     ,lock:()=>{if(window.__lockReset)window.__lockReset()}
     ,msg:()=>{try{localStorage.removeItem('hrn_msgs_v1')}catch(_){}}
-    ,maze:()=>{try{localStorage.removeItem('hrn_maze_v1');localStorage.removeItem('hrn_maze_best_v1')}catch(_){}}
+    ,maze:()=>{try{localStorage.removeItem('hrn_maze_v1');localStorage.removeItem('hrn_maze_best_v1');localStorage.removeItem('hrn_maze_walk_v1')}catch(_){}}
   };
   zone.querySelectorAll('[data-reset]').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -6319,7 +6354,9 @@ if(brandband){
     bye:{who:'依芽',text:'去吧。\n我一直在这儿。有新的事，我再写信给你。\n……路上小心。',as:[{t:'好，我走了'}],done:true},
     constell:{who:'依芽',text:'三颗星连成一线的那一刻，魔界那扇门松动了。\n……我什么都没说。去推门吧。',as:[{t:'我这就去'}],done:true},
     par:{who:'依芽',text:'你让那只刺猬走了。\n……谢谢你。它明年还会来，到时候你再摸摸它。',as:[{t:'它会记得我'}],done:true},
-    maze:{who:'依芽',text:'魔界那扇门，你推开过没有？\n三个人在里头等着。别怕撞墙，撞了就再来一次，那儿不记仇。',as:[{t:'我这就去'}],done:true},
+    maze:{who:'依芽',text:'魔界那扇门，你推开过没有？\n三位魔界生物在里头等着。别怕撞墙，撞了就再来一次，那儿不记仇。',as:[{t:'我这就去'}],done:true},
+    maze_stay:{who:'依芽',text:'你坐下了？\n好。\n有人进来是为了走完，有人是为了多坐一会儿——都行。\n门不催你，我也不催。',as:[{t:'谢谢你陪我',to:'stay'},{t:'我该走了',after:'wait'}]},
+    maze_walk:{who:'依芽',text:'你先走了。\n……也好。\n咖啡还热着，但有些地方，来过就够了。\n（我在心里替你留了个位置。）',as:[{t:'我还会回来',to:'remember'},{t:'我该走了',after:'wait'}]},
     /* —— 陪聊：每次进来随机抽话题，聊完还能换一批，话不重样 —— */
     more:{who:'依芽',text:()=>'那你想聊什么？\n'+rndA(['我把耳朵借你一会儿。','说吧，我听着。','（换了个坐姿）我准备好了。','别客气，{n}。']),
       as:()=>[{t:'说句悄悄话',to:'whisper'}]
@@ -6649,11 +6686,11 @@ if(brandband){
   const BKEY='hrn_maze_v1',DKEY='hrn_maze_best_v1';
   if(!maze||!grid||!log||!again||!leave)return;
   const R=7,C=7;
-  // 三个少女的位置与台词
+  // 三位魔界生物的位置与台词
   const GIRLS=[
-    {x:1,y:1,nm:'魔界洋娃娃',line:'「你走路的声音很好听。」——她把咖啡推给你，说这里的咖啡是用雾做的。'},
-    {x:5,y:2,nm:'咖啡使魔',line:'「续杯吗？」她说，「反正撞了墙的客人，都要点第二杯。」'},
-    {x:3,y:5,nm:'净庭恶魔',line:'「你来过啦。」她鞠了一躬，「这里不管生死，只管再来一次。」'}
+    {x:1,y:1,nm:'魔界洋娃娃',line:'「你走路的声音很好听。」——它把咖啡推给你，说这里的咖啡是用雾做的。'},
+    {x:5,y:2,nm:'咖啡使魔',line:'「续杯吗？」它说，「反正撞了墙的客人，都要点第二杯。」'},
+    {x:3,y:5,nm:'净庭恶魔',line:'「你来过啦。」它鞠了一躬，「这里不管生死，只管再来一次。」'}
   ];
   let walls=[],px=3,py=3,done={},runs=0,wonAll=false;
   try{wonAll=localStorage.getItem(BKEY)==='1'}catch(_){}
@@ -6699,7 +6736,7 @@ if(brandband){
     const flash=document.getElementById('hadesFlash'),sub=document.getElementById('hadesSub');
     px=3;py=3;paint();
     if(flash){
-      sub.textContent='冥河摆渡人替你把灯点了又熄：「还剩 '+Object.keys(done).length+' 个人等你，不急。」';
+      sub.textContent='冥河摆渡人替你把灯点了又熄：「还剩 '+(GIRLS.length-Object.keys(done).length)+' 位等你，不急。」';
       flash.hidden=false;flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');
       setTimeout(()=>{flash.hidden=true},1500);
     }
@@ -6715,7 +6752,7 @@ if(brandband){
       done[g.nm]=1;
       log.innerHTML='<b>'+g.nm+'</b>：'+g.line;
       if(window.__burst)window.__burst(grid,'gem');
-      const left=Object.keys(done).length;
+      const left=GIRLS.length-Object.keys(done).length;   // 还剩几位没遇上
       if(left===0){
         wonAll=true;again.disabled=true;
         try{const old=lsb();if(!old||steps<old)localStorage.setItem(DKEY,String(steps));
@@ -6726,11 +6763,55 @@ if(brandband){
         if(window.__mascotCheer)window.__mascotCheer('dolls','魔界走了一趟。');
         if(window.__msg)window.__msg('maze');
         bestTxt();
+        ending(true);
       }else{
         again.disabled=false;
       }
     }
     paint();
+  };
+  /* 结局：走完三个人之后有一段「茶话」，把这一趟收个尾。
+     这是黑蒂斯式「再来一次」的另一半——不光是失败能重来，
+     走成了也该有个落点，而不是弹出一句「你通关了」就没了。
+     茶话末尾给两个收法：坐下喝完 / 先走一步。两条都算数、都有收获，不分优劣
+     —— 这才是黑蒂斯真正的精神：走成了也该有个落点，而不是弹一句「你通关了」就完。 */
+  const ending=(won)=>{
+    if(!won)return;
+    const box=document.createElement('div');
+    box.className='mz-choices';
+    const stay=document.createElement('button');
+    stay.type='button';stay.className='mz-ch-stay';stay.textContent='坐下，喝完这杯';
+    const walk=document.createElement('button');
+    walk.type='button';walk.className='mz-ch-walk';walk.textContent='先走一步';
+    box.appendChild(stay);box.appendChild(walk);
+    log.appendChild(box);
+    const tip=document.createElement('div');tip.className='mz-tie';
+    tip.textContent='两条路都算走完，不分高低：坐下是留着，走出去是记着。';
+    log.appendChild(tip);
+    const settle=()=>{try{stay.remove();walk.remove();tip.remove()}catch(_){}};
+    stay.addEventListener('click',()=>{
+      settle();
+      log.innerHTML+='<br><b>—— 你坐下了。</b>咖啡凉了一轮，第二杯又续上。出门时天已经亮了。'
+        +'<br>「再来一次」还给你——门里的人都认得你了，位置一直留着。'
+        +'<br><span class="mz-tie">收获：它们记住了你的样子。（想再来，随时。）</span>';
+      // 「坐下」也是一种走法：把再来一次的资格还给你，不逼你非走不可
+      try{localStorage.setItem('hrn_maze_stay_v1','1')}catch(_){}
+      again.disabled=false;
+      if(window.__msg)window.__msg('maze_stay');
+      if(window.__mascotCheer)window.__mascotCheer('maze','你在魔界坐了一会儿。');
+    });
+    walk.addEventListener('click',()=>{
+      settle();
+      log.innerHTML+='<br><b>—— 你推门出去了。</b>咖啡还热着，但门在身后合上了。'
+        +'<br>它们说：这儿不记仇。什么时候想再来，门都开着。'
+        +'<br><span class="mz-tie">收获：多了一颗光籽。走出去，也是一种完成。</span>';
+      // 「不留恋」：不惩罚，反而多给一颗光籽——走出去也是完成
+      try{localStorage.setItem('hrn_maze_walk_v1','1')}catch(_){}
+      if(window.__achGain)window.__achGain('maze_walk');
+      if(window.__spirit)window.__spirit('maze_walk');
+      if(window.__msg)window.__msg('maze_walk');
+      if(window.__mascotCheer)window.__mascotCheer('maze','你没等那杯咖啡凉。');
+    });
   };
   again.addEventListener('click',build);
   leave.addEventListener('click',()=>{maze.hidden=true});
@@ -6785,6 +6866,65 @@ if(brandband){
 }catch(e){}})();
 
 updateTl();setTimeout(updateTl,400);setTimeout(updateTl,1200);
+
+/* ---- 底部吐司排队：图鉴与成就的提示会在同一瞬间触发，必须错开 ----
+   （例：收进最后一个字词时，图鉴提示与「殿堂之主」一起亮，两个都在底部正中 → 叠成一坨）
+   做法：所有吐司登记进队列，同一时刻只有队首可见，其余顺延一格。
+   队列空了自己会退掉。 */
+(function(){try{
+  const Q=[];
+  const layout=()=>{
+    // 重新计算每条该待在哪一格：可见的第一格 lane=0，后面依次 +1
+    let lane=0;
+    for(const it of Q){
+      if(!it.el)continue;
+      it.el.style.setProperty('--toast-lane',String(lane));
+      lane++;
+    }
+  };
+  window.__toastLane=el=>{
+    if(!el)return;
+    // 已在队列里就把它提到队首（重复触发时重新播一遍）
+    const i=Q.findIndex(x=>x.el===el);
+    if(i>=0)Q.splice(i,1);
+    Q.unshift({el:el,until:0});
+    layout();pump();
+  };
+  let timer=0;
+  function pump(){
+    clearTimeout(timer);
+    // 过期的移出
+    for(let i=Q.length-1;i>=0;i--){
+      if(Q[i].until&&Date.now()>Q[i].until){
+        const it=Q.splice(i,1)[0];
+        if(it.el){it.el.classList.remove('on');it.el.style.removeProperty('--toast-lane')}
+      }
+    }
+    layout();
+    if(Q.length){
+      const head=Q[0];
+      if(head.el&&!head.el.classList.contains('on'))head.el.classList.add('on');
+    }else{
+      // 全退完，把残留的 lane 样式清干净
+      document.querySelectorAll('.egg-toast,.ach-toast').forEach(e=>e.style.removeProperty('--toast-lane'));
+    }
+  }
+  // 供各处 toast 的显示/隐藏调用：显示时登记并给一个时长
+  window.__toastShow=(el,ms)=>{
+    if(!el)return;
+    window.__toastLane(el);
+    const it=Q.find(x=>x.el===el); if(it)it.until=Date.now()+(ms||2600);
+    timer=setTimeout(pump,220);   // 等它把 class 收上去再开始计时
+    setTimeout(pump,ms||2600);
+  };
+  window.__toastHide=el=>{
+    if(!el)return;
+    const i=Q.findIndex(x=>x.el===el);
+    if(i>=0)Q.splice(i,1);
+    el.classList.remove('on');el.style.removeProperty('--toast-lane');
+    clearTimeout(timer);timer=setTimeout(pump,180);
+  };
+}catch(e){}})();
 </script>
 </body>
 </html>
