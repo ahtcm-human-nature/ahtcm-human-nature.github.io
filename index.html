@@ -938,6 +938,18 @@ body.sanctuary .altar::after{opacity:1}
 /* 四立之约：物候图鉴里轻触的反馈 */
 .sd-terms span.qi-ok{background:rgba(180,215,150,.3);box-shadow:0 0 0 2px rgba(120,170,80,.6);border-radius:6px}
 .sd-terms span.qi-err{background:rgba(220,120,90,.25);box-shadow:0 0 0 2px rgba(180,80,50,.6);border-radius:6px}
+/* 四立之约：点中的节气要一直亮着，让人看得出「已经点了两个」。
+   原来只有 0.7 秒的闪烁，加上 2.5 秒就归零，玩家会以为进度没了。 */
+.sd-terms span.qi-done{background:linear-gradient(180deg,#eaf9ee,#d4eedd);border-color:#5ec98d;
+  box-shadow:0 0 0 2px rgba(94,201,141,.45),0 3px 0 rgba(60,130,90,.3)}
+.sd-terms span.qi-done b{color:#2c8455}
+.sd-terms span.qi-next{animation:qiPulse 1.8s ease-in-out infinite}
+@keyframes qiPulse{0%,100%{box-shadow:0 2px 0 rgba(92,58,30,.14)}50%{box-shadow:0 0 0 3px rgba(200,150,62,.35)}}
+.qi-hint{position:fixed;left:50%;bottom:96px;transform:translate(-50%,10px);z-index:215;opacity:0;
+  pointer-events:none;padding:7px 15px;border-radius:11px;font:700 12px/1.5 var(--sans);letter-spacing:.05em;
+  color:#fff5dd;background:rgba(38,26,14,.94);border:1.5px solid rgba(200,160,90,.5);
+  box-shadow:0 10px 26px -12px rgba(0,0,0,.7);transition:opacity .3s ease,transform .35s cubic-bezier(.16,1,.3,1)}
+.qi-hint.on{opacity:1;transform:translate(-50%,0)}
 
 /* 自然的回信：终章弹层 */
 /* 矮屏上卡片会比视口高：用 flex + 卡片 margin:auto —— 放得下时居中，放不下时卡片从顶部开始并整体可滚，
@@ -6276,22 +6288,53 @@ if(brandband){
     if(nodes.length<4)return;
     const QKEY='hrn_fourqi_v1';let done=false;
     try{done=localStorage.getItem(QKEY)==='1'}catch(_){}
-    if(done)return;
-    let step=0,resetT=null;
+    if(done){nodes.forEach(x=>x.classList.add('qi-done'));return;}
+    let step=0,resetT=null,hintT=null;
+    const NAMES=['立春','立夏','立秋','立冬'];
+    let hint=null;
+    /* 进度提示条：过去只有 0.7 秒的闪烁，玩家点了立春、立夏却看不出「已经点了两个」，
+       2.5 秒后 step 一归零就以为进度丢了。现在每点中一个就明确报一次进度。 */
+    const sayHint=(t,ms)=>{
+      if(!hint){hint=document.createElement('div');hint.className='qi-hint';document.body.appendChild(hint);}
+      hint.textContent=t;hint.classList.add('on');
+      clearTimeout(hintT);hintT=setTimeout(()=>hint&&hint.classList.remove('on'),ms||2200);
+    };
+    const clearMarks=()=>nodes.forEach(x=>x.classList.remove('qi-done','qi-next'));
     const flash=(n,ok)=>{n.classList.add(ok?'qi-ok':'qi-err');setTimeout(()=>n.classList.remove('qi-ok','qi-err'),700);};
     nodes.forEach(n=>{
       n.addEventListener('click',()=>{
         if(done)return;
         clearTimeout(resetT);
-        if(order[step]===n.dataset.t){flash(n,true);step++;
-          if(step>=4){done=true;try{localStorage.setItem(QKEY,'1')}catch(_){}
-          if(window.__achGain)window.__achGain('fourqi');
-          if(window.__spirit)window.__spirit('fourqi');
-          if(window.__mascotCheer)window.__mascotCheer('fourqi','四时之初，你都到了。');
-          if(window.__burst)window.__burst(nodes[3],'leaf');
-          if(window.__satchel)window.__satchel.add('clue','fourqi');}
-        }else{flash(n,false);step=0;}
-        resetT=setTimeout(()=>{step=0;},2500);
+        if(n.classList.contains('qi-done')){   // 重复点已点过的：不惩罚，只提醒还差哪个
+          sayHint(''+n.dataset.t+' 已经点过了 · 下一个：'+NAMES[step]);
+          resetT=setTimeout(()=>{step=0;clearMarks();sayHint('停太久了，从头再来',2000);},8000);
+          return;
+        }
+        if(order[step]===n.dataset.t){
+          flash(n,true);
+          n.classList.remove('qi-next');n.classList.add('qi-done');
+          step++;
+          if(step>=4){
+            done=true;try{localStorage.setItem(QKEY,'1')}catch(_){}
+            clearTimeout(resetT);nodes.forEach(x=>x.classList.remove('qi-next'));
+            sayHint('四立之约 · 四个都到了',2600);
+            if(window.__achGain)window.__achGain('fourqi');
+            if(window.__spirit)window.__spirit('fourqi');
+            if(window.__mascotCheer)window.__mascotCheer('fourqi','四时之初，你都到了。');
+            if(window.__burst)window.__burst(nodes[3],'leaf');
+            if(window.__satchel)window.__satchel.add('clue','fourqi');
+            return;
+          }
+          const nxt=nodes[step];if(nxt)nxt.classList.add('qi-next');
+          sayHint('四立之约 '+step+' / 4 · 下一个：'+NAMES[step]);
+        }else{
+          flash(n,false);
+          clearMarks();
+          step=0;
+          sayHint('顺序不对，从头再来 —— 立春 → 立夏 → 立秋 → 立冬',3200);
+        }
+        // 超时放宽到 8 秒：原来 2.5 秒太赶，人还没找到下一个立秋就没了
+        resetT=setTimeout(()=>{step=0;clearMarks();sayHint('停太久了，从头再来',2000);},8000);
       });
     });
   })();
@@ -7136,7 +7179,10 @@ if(brandband){
         wonAll=true;again.disabled=true;
         try{const old=lsb();if(!old||steps<old)localStorage.setItem(DKEY,String(steps));
              localStorage.setItem(BKEY,'1')}catch(_){}
-        log.innerHTML+='<br><b>三个人都见着了。</b>魔界门在你身后合上，但咖啡还热着。';
+        /* 注意：这里绝不能用 log.innerHTML += ——那会把整个日志重新解析一遍，
+           刚插进去的问答面板（.mz-ask）连同它身上的点击监听一起被销毁，
+           表现为「最后一位的对话点不动」。用 insertAdjacentHTML 只追加、不重解析。 */
+        log.insertAdjacentHTML('beforeend','<br><b>三个人都见着了。</b>魔界门在你身后合上，但咖啡还热着。');
         if(window.__achGain)window.__achGain('dolls');
         if(window.__spirit)window.__spirit('dolls');
         if(window.__mascotCheer)window.__mascotCheer('dolls','魔界走了一趟。');
@@ -7174,9 +7220,9 @@ if(brandband){
     const settle=()=>{try{stay.remove();walk.remove();tip.remove()}catch(_){}};
     stay.addEventListener('click',()=>{
       settle();
-      log.innerHTML+='<br><b>—— 你坐下了。</b>咖啡凉了一轮，第二杯又续上。出门时天已经亮了。'
+      log.insertAdjacentHTML('beforeend','<br><b>—— 你坐下了。</b>咖啡凉了一轮，第二杯又续上。出门时天已经亮了。'
         +'<br>「再来一次」还给你——门里的人都认得你了，位置一直留着。'
-        +'<br><span class="mz-tie">收获：它们记住了你的样子。（想再来，随时。）</span>';
+        +'<br><span class="mz-tie">收获：它们记住了你的样子。（想再来，随时。）</span>');
       // 「坐下」也是一种走法：把再来一次的资格还给你，不逼你非走不可
       try{localStorage.setItem('hrn_maze_stay_v1','1')}catch(_){}
       again.disabled=false;
@@ -7185,9 +7231,9 @@ if(brandband){
     });
     walk.addEventListener('click',()=>{
       settle();
-      log.innerHTML+='<br><b>—— 你推门出去了。</b>咖啡还热着，但门在身后合上了。'
+      log.insertAdjacentHTML('beforeend','<br><b>—— 你推门出去了。</b>咖啡还热着，但门在身后合上了。'
         +'<br>它们说：这儿不记仇。什么时候想再来，门都开着。'
-        +'<br><span class="mz-tie">收获：多了一颗光籽。走出去，也是一种完成。</span>';
+        +'<br><span class="mz-tie">收获：多了一颗光籽。走出去，也是一种完成。</span>');
       // 「不留恋」：不惩罚，反而多给一颗光籽——走出去也是完成
       try{localStorage.setItem('hrn_maze_walk_v1','1')}catch(_){}
       if(window.__achGain)window.__achGain('maze_walk');
