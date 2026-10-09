@@ -5,6 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>安徽中医药大学人与自然协会 · 环保路上，我们一路同行</title>
 <meta name="description" content="安徽中医药大学人与自然协会，成立于2000年4月22日世界地球日，校级优秀社团。绿色当铺、落叶传情、环保知识竞赛……环保路上，我们一路同行。">
+<meta name="theme-color" content="#2b7a4c">
+<meta name="author" content="安徽中医药大学人与自然协会">
+<!-- 分享卡片：招新季这条链接会被转发到微信群 / QQ / QQ 空间，
+     没有下面这段，对方看到的就是一条光秃秃的网址，点开率差很多。
+     ⚠️ 部署后请把 og:image / og:url 换成绝对地址（https://<用户名>.github.io/<仓库名>/assets/...），
+     微信和 QQ 的爬虫不执行 JS，也不一定解析相对路径。 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="人与自然协会">
+<meta property="og:title" content="安徽中医药大学人与自然协会 · 环保路上，我们一路同行">
+<meta property="og:description" content="成立于2000年4月22日世界地球日。绿色当铺、落叶传情、环保知识竞赛……零基础可加入，不收会费，不强制每场都来。">
+<meta property="og:image" content="assets/earth-day-booth.jpg">
+<meta property="og:image:alt" content="世界地球日摆台活动">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="安徽中医药大学人与自然协会 · 环保路上，我们一路同行">
+<meta name="twitter:description" content="成立于2000年4月22日世界地球日。零基础可加入，不收会费，不强制每场都来。">
+<meta name="twitter:image" content="assets/earth-day-booth.jpg">
 <link rel="icon" type="image/png" href="assets/emblem-sm.png">
 <link rel="preload" as="image" href="assets/emblem-sm.png" fetchpriority="high">
 <style>
@@ -94,6 +111,13 @@ a{color:inherit;text-decoration:none}
 .egg:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:3px}
 .egg.got{color:#c8963e;font-weight:700;text-shadow:0 1px 0 rgba(255,255,255,.35)}
 .egg.got::before{content:"✿ 已收录"}
+/* 手机上「埋点词」只有约 25×19，手指很难点中——这是收集玩法在触屏上最大的障碍。
+   用伪元素把热区向外撑到约 39×43：absolute 不占空间，排版和视觉完全不变，
+   也不给任何额外提示（没发现时它仍然只是一段普通文字，得靠自己翻找）。 */
+@media (pointer:coarse){
+  .egg::after{content:"";position:absolute;left:-7px;right:-7px;top:-12px;bottom:-12px;z-index:1}
+  .egg:focus-visible::after{outline:none}
+}
 .egg.got:hover::before,.egg.got:focus-visible::before{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
 .egg.ping{animation:eggPop .72s cubic-bezier(.34,1.56,.64,1)}
 @keyframes eggPop{0%{transform:scale(1)}32%{transform:scale(1.24) rotate(-2deg)}62%{transform:scale(.97)}100%{transform:scale(1)}}
@@ -134,19 +158,19 @@ a{color:inherit;text-decoration:none}
 /* ============ 殿堂模式 2.0：集齐 33 词后，世界变成一座有层次的金色圣殿 ============ */
 /* 整组叠层平时透明、不吃点击；只有 body.sanctuary 时浮现。全部用常规 alpha，不混色、不模糊，省 GPU */
 .sanct-scene{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity 1.6s ease}
-body.sanctuary .sanct-scene{opacity:1}
+body.sanctuary .sanct-scene{opacity:.62}
 /* 天幕：暖色黄昏→黎明的纵向渐变，常规 alpha（不用 mix-blend-mode，避免整屏回读） */
 .sc-sky{position:absolute;inset:0;background:
   linear-gradient(180deg,rgba(54,38,16,.34) 0%,rgba(120,82,28,.18) 32%,rgba(255,214,138,.06) 60%,rgba(255,234,182,.18) 100%)}
 /* 远景：远山树线 + 一轮暖阳（SVG，仅 transform 极缓漂移） */
 .sc-far{position:absolute;left:50%;bottom:0;width:150vw;height:64vh;transform:translateX(-50%);
   opacity:0;transition:opacity 2.4s ease .2s;will-change:transform}
-body.sanctuary .sc-far{opacity:.6;animation:scFarDrift 90s ease-in-out infinite alternate}
+body.sanctuary .sc-far{opacity:.26;animation:scFarDrift 90s ease-in-out infinite alternate}
 @keyframes scFarDrift{from{transform:translateX(-50%) translateY(0)}to{transform:translateX(-50%) translateY(-1.4vh)}}
 /* 顶部彩窗：真实铅条几何 + 动植物纹样玻璃（SVG，无模糊、无混色） */
 .sc-window{position:absolute;top:-5vh;left:50%;width:min(720px,90vw);height:44vh;transform:translateX(-50%);
   opacity:0;transition:opacity 2.2s ease .35s;filter:drop-shadow(0 16px 36px rgba(255,180,90,.18))}
-body.sanctuary .sc-window{opacity:.92}
+body.sanctuary .sc-window{opacity:.28}
 /* 彩窗洒下的光柱（静态渐变，无动画，最省） */
 .sc-rays{position:absolute;top:0;left:0;right:0;height:82vh;opacity:0;transition:opacity 2.4s ease .5s;
   background:
@@ -176,7 +200,7 @@ body.sanctuary .sc-firefly{opacity:.9}
     radial-gradient(60% 100% at 12% 100%,rgba(38,26,10,.55),transparent 70%),
     radial-gradient(72% 100% at 50% 100%,rgba(28,19,8,.6),transparent 72%),
     radial-gradient(60% 100% at 88% 100%,rgba(38,26,10,.55),transparent 70%)}
-body.sanctuary .sc-near{opacity:1}
+body.sanctuary .sc-near{opacity:.26}
 /* 金色光尘：缩减到 14 颗，纯 transform，无模糊 */
 .sc-dust{position:absolute;inset:0;overflow:hidden}
 .sc-dust i{position:absolute;top:-8%;left:var(--x,50%);width:var(--s,5px);height:var(--s,5px);
@@ -185,6 +209,19 @@ body.sanctuary .sc-near{opacity:1}
 @keyframes scFall{0%{transform:translate3d(0,-10vh,0) scale(.6);opacity:0}12%{opacity:.85}88%{opacity:.5}100%{transform:translate3d(var(--dx,24px),112vh,0) scale(1.05);opacity:0}}
 /* 暖色统一晕影，让各层融成一体 */
 .sc-vign{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 36%,transparent 55%,rgba(118,80,24,.24) 100%)}
+.sc-moon{position:absolute;right:8vw;top:11vh;width:min(124px,19vw);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 36% 32%,#fffef8,#ece8d2 58%,#d6cfae 100%);
+  box-shadow:0 0 44px rgba(245,246,225,.45),0 0 110px rgba(220,228,200,.22);
+  opacity:0;transform:scale(.94);transition:opacity 2.6s ease,transform 2.6s ease;pointer-events:none}
+body.moonlight .sc-moon{opacity:.46;transform:none}
+body.sundog .sc-moon{opacity:.38}
+.sc-halo{position:absolute;inset:0;opacity:0;transition:opacity 2.8s ease;pointer-events:none;
+  background:
+    radial-gradient(62% 46% at 50% 6%,rgba(255,232,168,.30),transparent 62%),
+    radial-gradient(44% 36% at 82% 17%,rgba(238,244,222,.22),transparent 60%)}
+body.sundog .sc-halo{opacity:1}
+body.sundog .sc-sky{background:
+  linear-gradient(180deg,rgba(60,40,12,.26) 0%,rgba(150,102,34,.18) 30%,rgba(255,222,150,.10) 58%,rgba(226,238,214,.20) 100%)}
 /* 解锁过场：两扇枝叶幕向两侧拉开，露出圣殿 */
 .sanct-curtain{position:fixed;inset:0;z-index:95;pointer-events:none;display:none}
 .sanct-curtain.go{display:block}
@@ -234,7 +271,7 @@ body.forest .spore{opacity:1}
 body.tab-hidden .spore i{animation-play-state:paused}
 /* ============ GRIS：殿堂中央「重聚的自然之神」—— 集齐时一片片归位 + 无声之歌 ============ */
 .sc-statue{position:absolute;left:50%;top:31%;width:150px;height:210px;transform:translate(-50%,-50%);opacity:0;transition:opacity 1.8s ease .3s}
-body.sanctuary .sc-statue{opacity:1}
+body.sanctuary .sc-statue{opacity:.3}
 .sc-statue .part{transform:translateY(30px) scale(.55);opacity:0;transition:transform 1.1s cubic-bezier(.2,.9,.3,1),opacity 1.1s ease}
 body.sanctuary .sc-statue .part{transform:none;opacity:1}
 body.sanctuary .sc-statue .p1{transition-delay:.25s}
@@ -371,7 +408,27 @@ body.sanctuary .sc-sing{animation:scSing 3.4s ease-out 1.5s 1}
 .mz-ch-walk:hover{transform:translateY(-2px);box-shadow:0 6px 16px -8px rgba(70,110,130,.8)}
 .mz-choices button:focus-visible{outline:2px solid #6b4463;outline-offset:2px}
 .mz-tie{display:block;margin-top:9px;font-size:11px;line-height:1.65;color:#7c5f78;letter-spacing:.03em}
+/* 石台开了之后：那封信还能再读一遍（否则先解盘、后集齐的人就再没见过码） */
+.disc-read{margin:12px auto 0;display:block;font-family:var(--sans);font-size:11.5px;font-weight:700;
+  letter-spacing:.1em;color:#7a5a3c;background:rgba(255,255,255,.5);cursor:pointer;
+  border:1.5px dashed rgba(160,120,80,.5);border-radius:999px;padding:7px 16px;transition:.25s}
+.disc-read:hover{color:#5c3d22;border-color:rgba(160,120,80,.9);background:rgba(255,255,255,.78)}
 .maze-hint{margin-top:11px;font-size:11px;color:#8d7192;line-height:1.75;text-align:center}
+/* 这一趟的成绩：印记 / 步数 / 撞墙 */
+.mz-stat{margin:10px auto 2px;text-align:center;font-size:11px;letter-spacing:.06em;color:#8d7192}
+.mz-stat b{color:#5c3a58;font-weight:800}
+/* 遇见魔界生物时的两句互动（不答题、不惩罚，只是陪它说一句） */
+.mz-ask{margin-top:9px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.5);
+  border:1px dashed rgba(160,120,160,.45);display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.mz-ask-q{flex:1 0 100%;font-size:11.5px;color:#6f4a68;letter-spacing:.03em}
+.mz-ask button{flex:1 1 auto;min-width:96px;padding:8px 12px;border-radius:999px;cursor:pointer;
+  font:700 11.5px/1.3 var(--sans);color:#4a2f44;background:linear-gradient(180deg,#f0e2f0,#dcc6dc);
+  border:1.5px solid #a67ba0;transition:.2s}
+.mz-ask button:hover{transform:translateY(-1px);box-shadow:0 6px 14px -8px rgba(110,60,100,.8)}
+.mz-ask button:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+.mz-ask-r{flex:1 0 100%;font-size:11.5px;line-height:1.75;color:#5a3f55;letter-spacing:.02em}
+/* 通关结算 */
+.mz-sum{margin-top:10px;font-size:11.5px;line-height:1.8;color:#6f4a68;letter-spacing:.03em}
 
 /* ============ 黑蒂斯式「再来一次」：死亡不是终点 ============ */
 .hades-flash{position:fixed;inset:0;z-index:254;display:grid;place-items:center;pointer-events:none;
@@ -422,7 +479,7 @@ html[data-fx="spring"] .mascot{filter:drop-shadow(0 6px 10px rgba(30,70,30,.35))
 .mascot.say .mascot-bubble{opacity:1;transform:none}
 /* 殿堂里坐镇的小依芽 */
 .sc-mascot{position:absolute;right:9vw;top:8vh;width:40px;height:40px;opacity:0;transform:translateY(8px);transition:opacity 1.6s ease 1s,transform 1.6s ease 1s;animation:mascotBob 3.4s steps(2) infinite}
-body.sanctuary .sc-mascot{opacity:.92;transform:none}
+body.sanctuary .sc-mascot{opacity:.4;transform:none}
 .sc-mascot svg{width:100%;height:100%}
 /* 终章里留话的依芽 */
 .fin-mascot{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin-top:14px;color:var(--wood-dk);font-size:13px;opacity:.8}
@@ -511,6 +568,13 @@ body.sanctuary .altar::after{opacity:1}
 .altar-h b{display:block;font-family:var(--serif);font-size:clamp(19px,2.3vw,23px);font-weight:900;
   color:#7a5418;letter-spacing:.1em;line-height:1.35}
 .altar-h span{display:block;margin-top:8px;font-size:12.5px;color:#9a7a3e;letter-spacing:.06em;line-height:1.85}
+/* 殿堂铭牌：把你在这儿留下的东西记一笔（心意，不抢兑换码的戏） */
+.altar-plate{max-width:520px;margin:0 auto 16px;text-align:center;padding:11px 16px;border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,252,242,.72),rgba(255,244,220,.55));
+  border:1px solid rgba(198,154,60,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.altar-plate .ap-line{display:block;font-size:11.5px;letter-spacing:.08em;color:#a08a5e}
+.altar-plate .ap-line b{color:#7a5418;font-weight:800}
+.altar-plate .ap-wish{display:block;margin-top:7px;font-size:12.5px;line-height:1.8;color:#8a6a2c;letter-spacing:.03em}
 /* 兑换码 */
 .code-box{margin:0 auto;max-width:520px;text-align:center;padding:16px 18px 15px;border-radius:14px;
   background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(255,246,224,.86));
@@ -782,6 +846,8 @@ body.sanctuary .altar::after{opacity:1}
   letter-spacing:.06em;color:#fdf4ff;background:linear-gradient(135deg,#7c4a72,#5c3357);border:1.5px solid #8d6a86;
   box-shadow:0 4px 14px -8px rgba(90,40,80,.9);transition:.22s}
 .satchel-maze:hover{transform:translateY(-1px);box-shadow:0 7px 18px -8px rgba(90,40,80,.95)}
+.satchel-wander{margin-top:9px;font:600 11px/1.5 var(--sans);letter-spacing:.05em;color:#cbb79a;text-align:center}
+.satchel-wander b{color:#f3d79a;font-weight:800}
 .satchel-maze:active{transform:scale(.98)}
 .satchel-maze:focus-visible{outline:2px solid #c794bd;outline-offset:2px}
 .satchel-maze:disabled{opacity:.42;cursor:not-allowed;transform:none;box-shadow:none}
@@ -850,6 +916,25 @@ body.sanctuary .altar::after{opacity:1}
 .beast.hit{animation:beastPop .6s ease forwards}
 @keyframes beastPop{to{transform:scale(0);opacity:0}}
 
+/* 路过的小家伙：不定时从屏幕这头走到那头的小生物。
+   纯趣味，不带成就、不占门槛——看见算运气，点中算跟它聊过一句。
+   做成比刺猬更低的存在感：个头更小、走得更慢、说话也更轻。 */
+.wander{position:fixed;bottom:clamp(58px,10vh,120px);left:-70px;z-index:155;width:36px;height:28px;
+  cursor:pointer;image-rendering:pixelated;filter:drop-shadow(0 3px 5px rgba(0,0,0,.26));
+  opacity:0;transition:opacity .6s ease}
+.wander.in{opacity:1}
+.wander[hidden]{display:none}
+.wander svg{width:100%;height:100%;display:block}
+.wander.hit{animation:beastPop .55s ease forwards}
+.wander-tip{position:fixed;z-index:190;max-width:min(300px,82vw);padding:9px 15px;border-radius:11px;
+  background:linear-gradient(180deg,#fdf8ea,#f3e4c4);border:2.5px solid var(--wood-dk);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.75),0 6px 0 rgba(92,58,30,.2),0 18px 34px -16px rgba(40,24,10,.55);
+  font-size:12.5px;line-height:1.75;color:#4a3a22;font-weight:600;opacity:0;pointer-events:none;
+  transform:translate(-50%,10px) scale(.94);transition:opacity .26s ease,transform .4s cubic-bezier(.16,1,.3,1)}
+.wander-tip.on{opacity:1;transform:translate(-50%,0) scale(1)}
+.wander-tip b{display:block;font-size:10px;letter-spacing:.16em;color:#a08e6f;font-weight:800;margin-bottom:4px}
+@media(prefers-reduced-motion:reduce){.wander{transition:none}.wander.hit{animation:none}}
+
 /* 四立之约：物候图鉴里轻触的反馈 */
 .sd-terms span.qi-ok{background:rgba(180,215,150,.3);box-shadow:0 0 0 2px rgba(120,170,80,.6);border-radius:6px}
 .sd-terms span.qi-err{background:rgba(220,120,90,.25);box-shadow:0 0 0 2px rgba(180,80,50,.6);border-radius:6px}
@@ -874,6 +959,9 @@ body.sanctuary .altar::after{opacity:1}
 .finale-code button{margin-top:10px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;padding:6px 16px;border-radius:9px;
   border:1.5px solid rgba(180,215,150,.5);background:rgba(255,255,255,.08);color:#dff3d4;transition:.2s}
 .finale-code button:hover{background:rgba(255,255,255,.16)}
+.finale-code.locked{border-style:solid;border-color:rgba(200,170,110,.34);background:rgba(0,0,0,.18)}
+.finale-code.locked b{font-family:var(--serif);font-size:14px;letter-spacing:.1em;color:rgba(232,218,175,.82)}
+.finale-code.locked span{color:rgba(198,214,178,.74)}
 .finale-close{font:inherit;font-size:13px;font-weight:700;letter-spacing:.08em;cursor:pointer;padding:9px 22px;border-radius:11px;
   border:1.5px solid rgba(180,215,150,.5);background:linear-gradient(180deg,#bfe6c4,#8fc99a);color:#1f5a2e;transition:.2s}
 .finale-close:hover{transform:translateY(-1px)}
@@ -2184,6 +2272,12 @@ html[data-fx="winter"] .fx-ring{border-radius:4px}
 .sd-terms span:hover{transform:translateY(-4px);border-color:#a8824a;box-shadow:0 10px 20px -10px rgba(92,58,30,.5)}
 .sd-terms b{display:block;font-family:var(--serif);font-size:15px;font-weight:900;color:var(--wood-dk);letter-spacing:.04em}
 .sd-terms i{display:block;font-style:normal;font-size:11px;letter-spacing:.06em;color:#a1855c;margin-top:4px}
+/* 手机上 11px 的中文偏小（尤其节气格只有三列、每格更窄），提到 12px。
+   只动这类「要读的正文小字」；10.5px 的英文装饰标签是刻意的设计，保持原样。 */
+@media(max-width:640px){
+  .sd-terms i{font-size:12px}
+  .sd-terms span{padding:11px 3px 10px}
+}
 .sd-terms span.now{background:linear-gradient(180deg,#eaf9ee,#d4eedd);border-color:#5ec98d;box-shadow:0 0 0 2px rgba(94,201,141,.32),0 3px 0 rgba(60,130,90,.3)}
 .sd-terms span.now b{color:#2c8455}
 .sd-terms span.now i{color:#4d9a72}
@@ -2263,6 +2357,8 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
 
 <!-- 殿堂叠层：集齐图鉴后由脚本点亮，平时完全透明且不吃点击 -->
 <div class="sanct-scene" aria-hidden="true">
+  <div class="sc-halo" aria-hidden="true"></div>
+  <div class="sc-moon" aria-hidden="true"></div>
   <div class="sc-sky"></div>
   <svg class="sc-far" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
     <circle cx="600" cy="135" r="96" fill="rgba(255,224,150,.42)"/>
@@ -3117,9 +3213,10 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
       <svg class="altar-beast" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true"><use href="#px-deer"/></svg>
       <div class="altar-h">
         <span class="a-star">✦ ✦ ✦</span>
-        <b>图鉴全亮 · 殿堂已开启</b>
-        <span>三十三个字词都被你找了出来——从第一株到最后一片叶。<br>这座殿堂现在为你亮着，兑换码就在下面。</span>
+        <b>三十三枚彩蛋 · 皆已归位</b>
+        <span>从第一株新芽，到最后一片落叶——都在这座殿堂里了。<br>座位一直给你留着，兑换码在下面。</span>
       </div>
+      <div class="altar-plate" id="altarPlate"></div>
       <div class="code-box">
         <em>兑 换 码</em>
         <div class="code-v" id="codeV" title="点击复制">— — — — — —</div>
@@ -3455,6 +3552,7 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
         <li><span class="fr-n">夜观台</span><span class="fr-v" id="frLock">—</span><button type="button" class="fr-btn" data-reset="lock">复位</button></li>
         <li><span class="fr-n">短信</span><span class="fr-v" id="frMsg">—</span><button type="button" class="fr-btn" data-reset="msg">清空</button></li>
         <li><span class="fr-n">魔界门</span><span class="fr-v" id="frMaze">—</span><button type="button" class="fr-btn" data-reset="maze">清空</button></li>
+        <li><span class="fr-n">偶遇录</span><span class="fr-v" id="frWander">—</span><button type="button" class="fr-btn" data-reset="wander">清空</button></li>
       </ul>
       <button type="button" class="fr-all" id="frAll">↺ 全部重置</button>
     </div>
@@ -3493,7 +3591,8 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
     </div>
     <div class="satchel-list" id="satchelTok"></div>
     <div class="satchel-list" id="satchelClue" hidden></div>
-    <button type="button" class="satchel-maze" id="satchelMaze">通往魔界的那扇门 →</button>
+    <button type="button" class="satchel-maze" id="satchelMaze" hidden>通往魔界的那扇门 →</button>
+    <p class="satchel-wander" id="satchelWander" hidden>偶遇录 · <b id="wanderN">0</b>/7 只小家伙打过照面</p>
   </div>
   <button type="button" class="to-top" id="toTop" aria-label="回到顶部">
     <svg class="tt-ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19"/></svg>
@@ -3566,6 +3665,7 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
   <div class="maze-card">
     <div class="maze-h"><b>魔 界 门</b><span class="mz-best" id="mzBest"></span></div>
     <div class="mz-grid" id="mzGrid"></div>
+    <div class="mz-stat" id="mzStat"></div>
     <div class="maze-log" id="mzLog">欢迎来到魔界。走三次，别撞墙 —— 撞了也不要紧，这里不讲生死，只讲再来一次。</div>
     <div class="maze-btns">
       <button type="button" class="mz-new" id="mzAgain">再来一次</button>
@@ -3622,7 +3722,7 @@ a,button,input,select,textarea,label,[role="button"],.egg,.lk,.fc,.cx{cursor:var
   /* REQUIRED 是森林重生的门槛（与原 10 颗一致，不让放过刺猬的玩家永远集不满）；
    BONUS 是额外的光籽，只多亮一格、不参与判定，免得玩家错过魔界门就卡住收尾。 */
   const REQUIRED=['sprout','dew','ginkgo','snow','seasons','constell','fourqi','cipher','beast','codex'];
-  const BONUS=['mercy','dolls','maze_walk'];
+  const BONUS=['mercy','dolls','maze_walk','moon','sun'];
   const SEEDS=REQUIRED.concat(BONUS);
   let have={};try{have=JSON.parse(localStorage.getItem(SK)||'{}')||{}}catch(_){}
   if(typeof have!=='object')have={};
@@ -5196,6 +5296,22 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
   const showAltar=(code,at)=>{
     if(codeV)codeV.textContent=code;
     if(codeTime)codeTime.textContent=fmtTime(at);
+    // 殿堂铭牌：把你在这儿留下的东西记一笔（小小心意，不抢兑换码的戏）
+    const plate=document.getElementById('altarPlate');
+    if(plate){
+      const achN=(function(){try{const o=JSON.parse(localStorage.getItem('hrn_ach_v1')||'null');
+        if(Array.isArray(o))return o.length;
+        if(o&&typeof o==='object')return Object.keys(o).length;
+        return 0}catch(_){return 0}})();
+      const spN=(function(){try{return Object.keys(JSON.parse(localStorage.getItem('hrn_spirit_v1')||'{}')||{}).length}catch(_){return 0}})();
+      const fx=document.documentElement.dataset.fx;
+      const wish={spring:'土是松的——你把它唤醒的时候，它正好也想醒。',
+        summer:'蝉替你数过每一天。现在换我数你走的这几步。',
+        autumn:'叶子挑了最慢的那种颜色，落在你走过的路上。',
+        winter:'雪把一切收得很轻——你带来的东西，一样都没丢。'}[fx]||'这儿的每一片叶子，都记得你弯过腰。';
+      plate.innerHTML='<span class="ap-line">图鉴 <b>33</b> 枚 · 成就 <b>'+achN+'</b> 项 · 光籽 <b>'+spN+'</b> 枚</span>'
+        +'<span class="ap-wish">依芽：「'+wish+'」</span>';
+    }
     altar.classList.add('on');
     // 自然名默认收起，点一下才显示，避免截图直接暴露
     const mine=(function(){try{return (localStorage.getItem(NKEY)||'').trim()}catch(_){return ''}})();
@@ -5236,6 +5352,7 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
     if(!silent){
       if(curtain){curtain.classList.remove('go');void curtain.offsetWidth;curtain.classList.add('go');setTimeout(()=>curtain.classList.remove('go'),1350)}
       try{localStorage.setItem('hrn_ach_full_v1','1')}catch(_){}
+      if(window.__msg)window.__msg('sanct');   // 殿堂点亮的这一刻，依芽给你留了句话
     }
   };
 
@@ -5243,6 +5360,8 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
 
   // 图鉴集齐时由图鉴模块调用，正式点亮殿堂
   window.__sanctLight=()=>lightUp(false);
+  // 还差几枚彩蛋（终章用它提示"码还没到你手里"）
+  window.__codexLeft=()=>Math.max(0,TOTAL-(window.__codexCount?window.__codexCount():0));
   // 供终章「自然的回信」生成同格式限定兑换码（与核验台参数一致，可被核验）
   window.__makeRedeemCode=makeCode;
   // 集齐状态被打破时（比如放下了自然名，名字格没了）由它收回圣光。
@@ -5323,11 +5442,14 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
      w:'四件信物回到了各自出生的季节。石台彻底开了，里面是一封写给你的信。'},
     {id:'mercy',  n:'放过',     p:'px-cat-spring',x:56, y:20, sz:24,
      w:'你本可以把它收进行囊，但你让它走了。通关有很多种，不必非得把它据为己有。'},
+    {id:'fourtok', n:'四时信物', p:'px-seed',  x:22, y:84, sz:26,
+     w:'春的芽、夏的露、秋的银杏、冬的雪——四件信物凑齐，一年才算被你完整拿在手里。'},
     {id:'dolls',  n:'魔界客',   p:'px-star',  x:70, y:14, sz:30,
      w:'你走到三位魔界生物身边各说了一句话。它们不记仇，撞了墙也欢迎再来。'},
     {id:'maze_walk', n:'不留恋',  p:'px-drop', x:78, y:44, sz:22,
      w:'咖啡还热着，你还是推门出去了。有些地方不必久留，来过就够了。'}
   ];
+  window.__achTotal=()=>ACHS.length;
   const AKEY='hrn_ach_v1';
   let got={};
   try{got=JSON.parse(localStorage.getItem(AKEY)||'{}')||{}}catch(_){}
@@ -5673,6 +5795,7 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
   const vCodex=document.getElementById('frCodex'), vDraw=document.getElementById('frDraw'),
         vName=document.getElementById('frName'), vAch=document.getElementById('frAch'),
         vSanct=document.getElementById('frSanct'), vLock=document.getElementById('frLock'),
+        vWander=document.getElementById('frWander'),
         allBtn=document.getElementById('frAll');
   const ls=k=>{try{return localStorage.getItem(k)||''}catch(_){return ''}};
   const refresh=()=>{
@@ -5694,6 +5817,10 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
     const on=!!ls('hrn_sanctuary_v1');
     if(vSanct)vSanct.textContent=on?'已点亮':'未点亮';
     const sb=zone.querySelector('[data-reset="sanct"]');if(sb)sb.disabled=!on;
+    // 偶遇录
+    const w=window.__wanderStat?window.__wanderStat():0;
+    if(vWander)vWander.textContent=w?(w+' / 7 只'):'还没碰上';
+    const wb=zone.querySelector('[data-reset="wander"]');if(wb)wb.disabled=!w;
     // 夜观台：开着或转过格子，才需要复位
     const lk=window.__lockStat?window.__lockStat():null;
     if(vLock)vLock.textContent=lk?(lk.open?'已打开':'未打开'):'—';
@@ -5734,6 +5861,9 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
     ,lock:()=>{if(window.__lockReset)window.__lockReset()}
     ,msg:()=>{try{localStorage.removeItem('hrn_msgs_v1')}catch(_){}}
     ,maze:()=>{try{localStorage.removeItem('hrn_maze_v1');localStorage.removeItem('hrn_maze_best_v1');localStorage.removeItem('hrn_maze_walk_v1')}catch(_){}}
+    ,wander:()=>{try{localStorage.removeItem('hrn_wander_v1')}catch(_){}
+      const p=document.getElementById('satchelWander');if(p)p.hidden=true;
+      const n=document.getElementById('wanderN');if(n)n.textContent='0';}
   };
   zone.querySelectorAll('[data-reset]').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -5744,7 +5874,7 @@ document.querySelectorAll('.sd-stat b').forEach(b=>{
         btn.textContent='✓ 好了';
         btn.disabled=true;
         setTimeout(()=>{btn.textContent=btn.dataset.label||'重置';refresh()},1500);
-      },{codex:'确认清空',draw:'确认清零',name:'确认放下',ach:'确认重置',sanct:'确认收回',lock:'确认复位',msg:'确认清空',maze:'确认清空'}[k]);
+      },{codex:'确认清空',draw:'确认清零',name:'确认放下',ach:'确认重置',sanct:'确认收回',lock:'确认复位',msg:'确认清空',maze:'确认清空',wander:'确认清空'}[k]);
     });
   });
   const allArm=()=>{
@@ -5890,21 +6020,43 @@ if(brandband){
         ic.innerHTML=t?'<svg class="sd-px" viewBox="0 0 8 8" shape-rendering="crispEdges"><use href="'+HREF[t]+'"/></svg>':'<span class="ds-q">？</span>';
       });
     };
+    // 兑换码只有一枚：集齐三十三枚彩蛋、殿堂点亮的那一刻才生成。
+    // 这封信只借殿堂那枚——不再单独发码，免得出现「两枚码都能领」的糊涂账。
     const ensureFinaleCode=()=>{
-      const FKEY='hrn_finale_code_v1';let code='';
-      try{code=localStorage.getItem(FKEY)||''}catch(_){}
-      if(!code&&window.__makeRedeemCode){code=window.__makeRedeemCode();try{localStorage.setItem(FKEY,code)}catch(_){}}
-      return code;
+      try{const o=JSON.parse(localStorage.getItem('hrn_sanctuary_v1')||'null');
+          if(o&&o.code)return o.code}catch(_){}
+      return '';
     };
     const showFinale=()=>{
       const f=document.getElementById('finale');if(!f)return;
-      const codeEl=document.getElementById('finaleCode');
-      if(codeEl)codeEl.textContent=ensureFinaleCode()||'（本机无法生成兑换码）';
+      const codeEl=document.getElementById('finaleCode'),wrap=f.querySelector('.finale-code');
+      const copy=document.getElementById('finaleCopy');
+      const code=ensureFinaleCode();
+      if(wrap)wrap.classList.toggle('locked',!code);
+      if(code){
+        if(codeEl)codeEl.textContent=code;
+        if(wrap)wrap.querySelector('span').textContent='给你的回礼 · 殿堂那枚兑换码';
+        if(copy)copy.style.display='';
+      }else{
+        const left=(window.__codexLeft?window.__codexLeft():33);
+        if(codeEl)codeEl.textContent='✧ 还差 '+left+' 枚彩蛋';
+        if(wrap)wrap.querySelector('span').textContent='这枚码要等彩蛋集齐、殿堂开门那天，才跟着这封信一起给你';
+        if(copy)copy.style.display='none';
+      }
       f.hidden=false;requestAnimationFrame(()=>f.classList.add('on'));
-      const close=document.getElementById('finaleClose'),copy=document.getElementById('finaleCopy');
+      const close=document.getElementById('finaleClose');
       if(close)close.onclick=()=>{f.hidden=true;f.classList.remove('on');};
       if(copy)copy.onclick=()=>{const c=codeEl?codeEl.textContent:'';if(navigator.clipboard&&c)navigator.clipboard.writeText(c).then(()=>{copy.textContent='已复制'}).catch(()=>{});};
     };
+    // 石台开了以后，那封信还能随时再读（不然先解盘、后集齐的人就再没见过那枚码）
+    const addReadBtn=()=>{
+      if(!disc.classList.contains('open')||document.getElementById('discRead'))return;
+      const b=document.createElement('button');
+      b.type='button';b.id='discRead';b.className='disc-read';b.textContent='再读一遍那封信';
+      b.addEventListener('click',showFinale);
+      disc.appendChild(b);
+    };
+    window.__showFinale=()=>showFinale();
     const done=()=>{
       slots.forEach(s=>s.disabled=true);
       disc.classList.add('open');
@@ -5914,6 +6066,7 @@ if(brandband){
       if(window.__burst)window.__burst(disc,'flower');
       if(window.__achGain)window.__achGain('seasons');
       if(window.__spirit)window.__spirit('seasons');
+      addReadBtn();
       showFinale();
     };
     slots.forEach((s,i)=>{
@@ -5927,7 +6080,7 @@ if(brandband){
     });
     window.__discWake=()=>{paint();};
     paint();
-    if(cur.every((v,k)=>v===CORRECT[k])){slots.forEach(s=>s.disabled=true);disc.classList.add('open');if(need)need.textContent='石台早已开了。';ensureFinaleCode();}
+    if(cur.every((v,k)=>v===CORRECT[k])){slots.forEach(s=>s.disabled=true);disc.classList.add('open');if(need)need.textContent='石台早已开了。';addReadBtn();}
   })();
 
   /* ---- 连星：夜观台三格解开后，按那道顺序点亮三颗星 ---- */
@@ -6017,6 +6170,105 @@ if(brandband){
     schedule();
   })();
 
+  /* ---- 路过的小家伙：不定时有只小生物横穿屏幕，点它一下，它会说句话 ----
+     跟刺猬那套「放过 / 收下」的抉择完全分开：刺猬是抉择，这些是偶遇。
+     不给成就、不占灵树门槛，免得把本来轻松的东西也做成负担。
+     四分之一的概率顺手指一句路——只指方向，不说具体藏在哪儿，探的乐趣留给你自己。 */
+  (function(){
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    const KINDS=[
+      {k:'butterfly',nm:'一只蝴蝶',lines:['它停了两秒，又走了——花没留住它。',
+        '翅膀上带着两个小太阳，借你的光用一下。','别追。追不上的东西才好看。']},
+      {k:'snail',nm:'一只蜗牛',lines:['它不急。它背着自己的房子，去哪儿都不算流浪。',
+        '你走三步，它走一步。可它一直在走。','它说：慢不是缺点，是你没看见我在看路。']},
+      {k:'bird',nm:'一只麻雀',lines:['它歪头看了你一眼，然后决定不害怕。',
+        '落在最近的枝上抖了抖——像是打了个招呼。','城市里最吵的，往往是最小的那只。']},
+      {k:'frog',nm:'一只青蛙',lines:['它鼓了下腮帮子，没出声。','雨后它最精神，现在只是路过。',
+        '它蹲在那儿，像在等一个迟到的约定。']},
+      {k:'rabbit',nm:'一只兔子',lines:['耳朵先到，它自己后到。','它停了一下，确认你没打算追它。',
+        '草地上有一小块压平的痕迹——它昨晚在这儿睡过。']},
+      {k:'owl',nm:'一只猫头鹰',lines:['它睁着眼，但你不确定它醒着。','白天的猫头鹰，多半有心事。',
+        '它看你的时候，用的是一整张脸。']},
+      {k:'koi',nm:'一尾锦鲤',lines:['它探出头又缩回去——大概是认错人了。',
+        '红色的那尾最贪吃，也最亲人。','水面被它碰出一圈一圈，很久才平。']},
+      {k:'fox',nm:'一只狐狸',lines:['它看了你两秒，判断出你手里没有吃的。',
+        '它不躲，只是保持着刚好够跑的距离。','传闻里它狡猾，可它只是比较谨慎。']},
+      {k:'deer',nm:'一只鹿',lines:['它站在那儿，像一株会走路的树。','它听见你了，还没决定要不要走。',
+        '鹿的眼睛很亮——据说那是因为它很少眨眼。']}
+    ];
+    const TIPS=['花语墙那边，好像还有没翻过来的。','节气盘上多停一会儿试试——它比你更有耐心。',
+      '行囊最底下有一行小字，字小到很容易错过。','殿堂要三十三个词。你差的几个，多半在角落里。',
+      '有一枚成就只在四月二十二日那天亮。记着这个日子。','夜观台的三颗星，答案不在天上——在它们映着的那个地方。',
+      '六个部门都看一遍，会有人替你记一笔。','滚到最底下再滚回来，这件事也有人记。'];
+    const WKEY='hrn_wander_v1';
+    let seen={};try{seen=JSON.parse(localStorage.getItem(WKEY)||'{}')||{}}catch(_){}
+    let el=null,tip=null,timer=null,hideT=null,tipT=null;
+    const busy=()=>{                                   // 弹窗/灯箱开着的时候，别来打扰
+      const am=document.querySelector('.am.open'),lb=document.querySelector('.lb.open');
+      return document.hidden||!!am||!!lb;
+    };
+    const showTip=(x,y,nm,text)=>{
+      if(!tip){tip=document.createElement('div');tip.className='wander-tip';document.body.appendChild(tip);}
+      tip.innerHTML='<b>'+nm+'</b>'+text;
+      tip.style.left=Math.max(90,Math.min(innerWidth-90,x))+'px';
+      tip.style.top=Math.max(80,y-64)+'px';
+      tip.classList.add('on');
+      clearTimeout(tipT);tipT=setTimeout(()=>tip.classList.remove('on'),3400);
+    };
+    const pop=()=>{ if(!el)return; el.classList.add('hit'); setTimeout(()=>{if(el){el.hidden=true;el.classList.remove('hit')}},600); };
+    function appear(){
+      if(busy()){schedule();return;}
+      if(!el){
+        el=document.createElement('div');el.className='wander';el.hidden=true;
+        el.setAttribute('aria-hidden','true');document.body.appendChild(el);
+        el.addEventListener('click',onHit);
+      }
+      // 优先挑没见过的种类，见过的排在后面——让「遇见新的」这件事一直成立
+      const fresh=KINDS.filter(k=>!seen[k.k]);
+      const pool=fresh.length?fresh:KINDS;
+      const k=pool[Math.floor(Math.random()*pool.length)];
+      seen[k.k]=1;try{localStorage.setItem(WKEY,JSON.stringify(seen))}catch(_){}
+      const dir=Math.random()<0.5?1:-1;
+      const dur=9000+Math.random()*5000;
+      el.innerHTML='<svg viewBox="0 0 12 12" shape-rendering="crispEdges"><use href="#px-'+k.k+'"/></svg>';
+      el.style.bottom=(58+Math.random()*Math.max(20,innerHeight*0.1))+'px';
+      el.style.transition='none';el.style.transform=dir>0?'scaleX(1)':'scaleX(-1)';
+      el.style.left=dir>0?'-70px':'100%';el.hidden=false;
+      requestAnimationFrame(()=>{el.classList.add('in');
+        el.style.transition='left '+dur+'ms linear';el.style.left=dir>0?'100%':'-70px';});
+      const line=k.lines[Math.floor(Math.random()*k.lines.length)]
+        +((Math.random()<.25)?'　（'+TIPS[Math.floor(Math.random()*TIPS.length)]+'）':'');
+      el._line=line;el._nm=k.nm;
+      clearTimeout(hideT);
+      hideT=setTimeout(()=>{if(el){el.classList.remove('in');el.hidden=true}schedule();},dur+400);
+    }
+    function onHit(){
+      if(!el)return;
+      const r=el.getBoundingClientRect();
+      showTip(r.left+r.width/2,r.top,el._nm||'一个小家伙',el._line||'……');
+      if(window.__burst)window.__burst(el,'leaf');
+      pop();
+      clearTimeout(hideT);hideT=setTimeout(schedule,14000+Math.random()*10000);
+    }
+    const schedule=()=>{clearTimeout(timer);timer=setTimeout(appear,48000+Math.random()*52000);};
+    schedule();
+    /* 偶遇录：把「碰见过谁」留在行囊里。不给成就、不占灵树门槛——
+       偶遇这件事一旦变成任务，就不叫偶遇了。这里只是替你记一笔。 */
+    const paintWander=()=>{
+      const p=document.getElementById('satchelWander'),n=document.getElementById('wanderN');
+      if(!p||!n)return;
+      const c=Object.keys(seen).length;
+      n.textContent=String(c);
+      p.hidden=c<1;
+      p.title=KINDS.filter(k=>seen[k.k]).map(k=>k.nm.replace('一只','').replace('一尾','')).join(' · ')||'还没碰上谁';
+    };
+    paintWander();
+    window.__wanderStat=()=>Object.keys(seen).length;
+    window.__wanderSpawn=()=>{clearTimeout(timer);appear();};
+    const _appear=appear;
+    appear=function(){_appear();setTimeout(paintWander,120);};
+  })();
+
   /* ---- 四立之约：物候图鉴里，按 立春→立夏→立秋→立冬 依次轻触 ---- */
   (function(){
     const order=['立春','立夏','立秋','立冬'];
@@ -6096,7 +6348,51 @@ if(brandband){
       '这座小世界不大，可每一寸我都踩过。','你要真喜欢这儿，就多来几次——我不嫌你烦。',
       '今天的风有点黏人，跟我一样。','有些话得等到天黑才好说。比如现在。',
       '我不催你。反正我哪儿也不去。','过来，看这个——我在角落里留了点东西。',
-      '别把我当成只会提示的牌子，我可是有脾气的。','你要是笑了，就当我刚才没说话。'];
+      '别把我当成只会提示的牌子，我可是有脾气的。','你要是笑了，就当我刚才没说话。',
+      /* —— 以下新增：探路的暗示（给线索，但不给答案） —— */
+      '花语墙十六张卡，背面各藏一句。我数过三遍，不会错。',
+      '节气盘上多停一会儿，它会不好意思，然后给你东西。',
+      '行囊底下有一行紫字，字很小很小的那种。你找找。',
+      '殿堂要三十三个词才亮。你差多少？我不说，你自己看。',
+      '夜观台那三颗星，答案不在天上，在水里。',
+      '四颗信物散在四个区块里，两颗靠左、两颗靠右——别问我为什么这么放。',
+      '撞墙不要紧。这儿的规矩是：撞了也算走过。',
+      '小兽不是每次都来。它来不来，看心情——跟我一样。',
+      '有一枚成就，得在四月二十二日那天才亮。别的日子，谁来都没用。',
+      '你滚到最底下，再滚回来，会有人记得这件事。',
+      /* —— 猫的性子 —— */
+      '我刚舔完爪子，现在是干净的，可以摸。',
+      '别问我几岁。猫不说这个。',
+      '我打呼噜的时候别叫我，那是我一天里最重要的事。',
+      '你摸我头的话，我会假装不在意。',
+      '我盯那只蝴蝶盯了十分钟。它赢了。',
+      '猫的哲学很简单：晒得到的地方，都是我的。',
+      '我刚才扑空了。你没看见。你什么都没看见。',
+      '尾巴是我自己的，我想怎么甩就怎么甩。',
+      '我不捉老鼠。我们是讲环保的协会，讲点体面。',
+      '我把毛掉在沙发上了——算我为这个家做的贡献。',
+      /* —— 跟你抬杠 —— */
+      '你点我这么多下，是不是没什么朋友？……开玩笑的，我也没有。',
+      '别点了，我快没词了——才怪，我多得是。',
+      '再点我可要收费了。一颗光籽一句，概不赊账。',
+      '你手指不累吗？我看着都累。',
+      '我记住你了。猫记仇，也记人——你属于后面那种。',
+      '你要是再点，我就把你今天踩过几片叶子全说出来。',
+      /* —— 自然与季节 —— */
+      '这片叶子我盯了一下午，它还没决定要不要落。',
+      '下雨天我一般不出门，但你来了，我破例。',
+      '泥土刚翻过，闻到了吗？那是有人在干活的味道。',
+      '我喜欢看种子发芽——那是我少数愿意慢慢等的事。',
+      '你听，风换方向了。它比我更闲。',
+      '溪水不认识路，可它从来没走错过。',
+      '一棵树不说话，不代表它没意见。',
+      /* —— 关于这个地方 —— */
+      '这儿的人不催你。他们只问你一句：要不要一起走。',
+      '会长叫鼠尾草。她比我忙，但比我温柔。',
+      '不收会费——这年头，不收钱的东西反而最真。',
+      '你要是加入了，我就可以天天烦你了。想清楚。',
+      '零基础也能来。我刚来的时候，连叶子和花都分不清。',
+      '他们给了我一自然名，所以我算正式成员。你呢？'];
 
     /* —— 随场景说话：走进哪个板块，就说一句那儿的闲话（每个板块每次开页只说一遍） —— */
     const SCENE={
@@ -6158,9 +6454,58 @@ if(brandband){
 
     const fxNow=()=>document.documentElement.dataset.fx;
     const rnd=arr=>arr[Math.floor(Math.random()*arr.length)];
-    const clickLine=()=>{const f=fxNow();
-      return (Math.random()<.34&&SEA_WHISPER[f])?SEA_WHISPER[f]:rnd(WHISPERS);};
-    root.addEventListener('click',()=>{ say(clickLine()); hop(); });
+    /* —— 看着你的进度说话：不是从池子里随机抽，而是对「你现在走到哪了」的即时反应。
+       差一个时催你、一个没有时笑你、快满时承认你走得远——比通用悄悄话更像是有人在看。 —— */
+    const ctxLine=()=>{
+      const g=(window.__codexCount?window.__codexCount():0);
+      const T=(window.__codexTotal?window.__codexTotal():33)||33;
+      const left=Math.max(0,T-g);
+      const A=(window.__achTotal?window.__achTotal():0)||0;
+      let ag=0;try{const o=JSON.parse(localStorage.getItem('hrn_ach_v1')||'{}');
+        if(o&&typeof o==='object')ag=Object.keys(o).length}catch(_){}
+      const L=[];
+      if(g===0)L.push('一个词都还没收到？我开始怀疑你的眼神了——不过我眼神也不好，扯平。',
+                      '角落里的词是给你留的。你还没开始找吧？');
+      else if(left===1)L.push('就差一个了。我知道是哪个，但我不说——说出来就不算你找到的。',
+                              '最后一个最难，因为它知道自己是最后一个。');
+      else if(left<=3)L.push('还剩'+left+'个。近了，别在这时候放弃。',
+                             '快集齐了。殿堂那边的灯，我已经替你擦过了。');
+      else if(g*2>=T)L.push('过半了，比我预想的快——我本来以为你会半路走神。',
+                            g+'个了。你比我勤快，这话我只说一次。');
+      else L.push('你已经收了'+g+'个。剩下的我就不指路了，自己找才有意思。');
+      if(A>0&&ag>=A)L.push('星图满了。你是我见过走得最远的一个。',
+                           '星全亮了。现在轮到我发呆了。');
+      else if(A>0&&ag*2>=A)L.push('星过半了。你走得比大多数人远——这句话我不常说。');
+      if(g>=5){let nm=false;try{nm=!!localStorage.getItem('hrn_myname_v1')}catch(_){}
+        if(!nm)L.push('你还没挑自然名。别怕，挑了也随时能换，没人拦你。');}
+      return L.length?rnd(L):null;
+    };
+    /* —— 连点四下：不讲悄悄话了，改讲一段短的（一句接一句，像真的在讲给你听） —— */
+    const STORIES=[
+      ['你很闲嘛。','那我说个长的——','从前有只猫，守着一座会换季的园子。它不认路，但它认人。'],
+      ['又点我？好吧。','园子里最难找的从来不是花，','是有人愿意蹲下来、好好看它的那双眼睛。'],
+      ['行，你赢了。','讲个真的：有一年冬天特别冷，','几个人把最后一盆花搬进了屋。那盆花现在还在。'],
+      ['你再点，我就讲完。','这座园子已经二十六年了，','比我来得早，也会比我走得晚。你要不要也留久一点？'],
+      ['听好了，只讲一次。','有人在这儿的角落里藏了六十多个词，','不为难你，是为了让你慢下来。'],
+      ['我讲个短的。','种子不问土好不好，它先扎下去。','人也一样——先来，再谈别的。'],
+      ['你真不放过我。','那就说我最喜欢的一件事：','每年四月二十二日，这儿都会比平常亮一点。'],
+      ['最后一讲了。','有人问我守在这儿多久了。','我说：久到我记不清了，但我记得每一个来过的人。']
+    ];
+    let clicks=0,clickT=0,storyI=0,storyT=0;
+    root.addEventListener('click',()=>{
+      const now=Date.now();
+      clicks=(now-clickT<2600)?clicks+1:1;clickT=now;
+      clearTimeout(storyT);
+      if(clicks>=4){                                  // 连点够了：讲一段连续的，而不是再甩一句
+        const s=STORIES[storyI%STORIES.length];storyI++;let i=0;
+        const step=()=>{if(i>=s.length)return;say(s[i]);hop();i++;storyT=setTimeout(step,2650)};
+        step();clicks=0;return;
+      }
+      const c=(Math.random()<.45)?ctxLine():null;     // 不到一半的概率说「看着你进度」的话，其余仍走池子
+      const f=fxNow();
+      say((!c&&Math.random()<.34&&SEA_WHISPER[f])?SEA_WHISPER[f]:(c||rnd(WHISPERS)));
+      hop();
+    });
 
     const seenScene={};let curScene='',lastSay=0,lastSceneSay=0,seqScene={},
       pendingSay=null,pendingPrio=0,pendingOn=null,pendingT=0;
@@ -6319,7 +6664,7 @@ if(brandband){
       '页面底下偶尔会走过一只小刺猬。撞见了别急着抓——放它走，它会记住你。',
       '有只小家伙会从屏幕边上经过。它没有恶意，只是想被看见。']);
     if(LS('hrn_maze_v1')!=='1') return pick([
-      '「行囊」最下面那扇门通向魔界。里头三位，走过去各说一句话就好；撞墙也没关系，那儿不记仇。',
+      '「行囊」最下面那扇门已经开了（星连成线那次）。里头三位，走过去各陪它说一句；撞墙也没关系，那儿不记仇。',
       '魔界门在左下角行囊里。三个人，三句话——随便说，那儿不管你说得对不对。',
       '去行囊底下推那扇门。撞几次墙它都不会生气。']);
     if(LS('hrn_ach_full_v1')!=='1') return pick([
@@ -6357,6 +6702,7 @@ if(brandband){
     maze:{who:'依芽',text:'魔界那扇门，你推开过没有？\n三位魔界生物在里头等着。别怕撞墙，撞了就再来一次，那儿不记仇。',as:[{t:'我这就去'}],done:true},
     maze_stay:{who:'依芽',text:'你坐下了？\n好。\n有人进来是为了走完，有人是为了多坐一会儿——都行。\n门不催你，我也不催。',as:[{t:'谢谢你陪我',to:'stay'},{t:'我该走了',after:'wait'}]},
     maze_walk:{who:'依芽',text:'你先走了。\n……也好。\n咖啡还热着，但有些地方，来过就够了。\n（我在心里替你留了个位置。）',as:[{t:'我还会回来',to:'remember'},{t:'我该走了',after:'wait'}]},
+    sanct:{who:'依芽',text:'图鉴全亮了。\n三十三枚，一枚不少。\n我在殿堂里给你留了座位——还有一枚码，只给走到这里的人。\n去最下面看看，它在那儿等你。',as:[{t:'我这就去',to:'hint'},{t:'谢谢你',to:'remember'}]},
     /* —— 陪聊：每次进来随机抽话题，聊完还能换一批，话不重样 —— */
     more:{who:'依芽',text:()=>'那你想聊什么？\n'+rndA(['我把耳朵借你一会儿。','说吧，我听着。','（换了个坐姿）我准备好了。','别客气，{n}。']),
       as:()=>[{t:'说句悄悄话',to:'whisper'}]
@@ -6688,11 +7034,20 @@ if(brandband){
   const R=7,C=7;
   // 三位魔界生物的位置与台词
   const GIRLS=[
-    {x:1,y:1,nm:'魔界洋娃娃',line:'「你走路的声音很好听。」——它把咖啡推给你，说这里的咖啡是用雾做的。'},
-    {x:5,y:2,nm:'咖啡使魔',line:'「续杯吗？」它说，「反正撞了墙的客人，都要点第二杯。」'},
-    {x:3,y:5,nm:'净庭恶魔',line:'「你来过啦。」它鞠了一躬，「这里不管生死，只管再来一次。」'}
+    {x:1,y:1,nm:'魔界洋娃娃',line:'「你走路的声音很好听。」——它把咖啡推给你，说这里的咖啡是用雾做的。',
+     ask:{q:'杯子冒着白气，闻起来像刚下过雨的林子。',
+       opts:[{t:'喝一口',r:'你抿了一口——凉的，却在舌根暖起来。它笑了：「雾做的，别指望它烫。」'},
+             {t:'推回去',r:'你把它推回去。它也没收，只是让杯子停在两人中间：「那就先放着，等你回头。」'}]}},
+    {x:5,y:2,nm:'咖啡使魔',line:'「续杯吗？」它说，「反正撞了墙的客人，都要点第二杯。」',
+     ask:{q:'它举着壶，等你开口。',
+       opts:[{t:'再来一杯',r:'第二杯比第一杯甜。它说：「撞过墙的人舌头会迟钝——所以我多放了一勺。」'},
+             {t:'不了，谢谢',r:'它把壶放下，也不恼：「也行。清醒着走出去，也算一种喝法。」'}]}},
+    {x:3,y:5,nm:'净庭恶魔',line:'「你来过啦。」它鞠了一躬，「这里不管生死，只管再来一次。」',
+     ask:{q:'它伸出手，掌心朝上。',
+       opts:[{t:'把手放上去',r:'它的掌心很凉。你听见一声很轻的「叮」——像有人替你把某件旧事收进了抽屉。'},
+             {t:'鞠一躬就走',r:'你鞠躬，它回礼。谁都没说话，可那扇门替你让开了半寸。'}]}}
   ];
-  let walls=[],px=3,py=3,done={},runs=0,wonAll=false;
+  let walls=[],px=3,py=3,done={},runs=0,wonAll=false,bumps=0,marks=[],t0=0;
   try{wonAll=localStorage.getItem(BKEY)==='1'}catch(_){}
   const lsb=()=>{try{return +(localStorage.getItem(DKEY)||0)}catch(_){return 0}};
   const bestTxt=()=>{best.textContent=wonAll?('走通了 · 最好 '+lsb()+' 步'):(lsb()?('最好 '+lsb()+' 步'):'')};
@@ -6705,14 +7060,37 @@ if(brandband){
     }
     [[2,1],[4,1],[1,3],[5,3],[2,5],[4,5],[3,2]].forEach(p=>walls.push(p));
     px=3;py=3;done={};runs++;
+    steps=0;bumps=0;marks=[];t0=Date.now();
     paint();
-    log.innerHTML='走三次，别撞墙。<b>撞了也不要紧</b> —— 这里只讲再来一次。';
+    log.innerHTML='走三次，别撞墙。<b>撞了也不要紧</b> —— 这里只讲再来一次。<br>遇见谁，就陪它说一句。';
     again.disabled=true;
-    bestTxt();
+    bestTxt();updateStat();
   };
   const isW=(x,y)=>walls.some(w=>w[0]===x&&w[1]===y);
   const girlAt=(x,y)=>GIRLS.find(g=>g.x===x&&g.y===y&&!done[g.nm]);
   let steps=0;
+  const updateStat=()=>{
+    const el=document.getElementById('mzStat');if(!el)return;
+    el.innerHTML='印记 <b>'+marks.length+'/3</b>　·　步数 <b>'+steps+'</b>　·　撞墙 <b>'+bumps+'</b>';
+  };
+  // 遇见谁，就陪它说一句：两个选项，两条不同的回话（不必选对，也不会选错）
+  const askPanel=g=>{
+    if(!g.ask)return;
+    const wrap=document.createElement('div');wrap.className='mz-ask';
+    const q=document.createElement('div');q.className='mz-ask-q';q.textContent=g.ask.q;
+    wrap.appendChild(q);
+    g.ask.opts.forEach(o=>{
+      const b=document.createElement('button');b.type='button';b.textContent=o.t;
+      b.addEventListener('click',()=>{
+        wrap.querySelectorAll('button').forEach(x=>x.disabled=true);
+        const r=document.createElement('div');r.className='mz-ask-r';r.textContent=o.r;
+        wrap.appendChild(r);
+        if(window.__burst)window.__burst(wrap,'gem');
+      });
+      wrap.appendChild(b);
+    });
+    log.appendChild(wrap);
+  };
   const paint=()=>{
     grid.style.gridTemplateColumns='repeat('+C+',34px)';
     grid.innerHTML='';
@@ -6734,7 +7112,7 @@ if(brandband){
   const ferry=()=>{
     // 黑蒂斯式：撞墙 = 回到门口 + 冥河摆渡人的一句话
     const flash=document.getElementById('hadesFlash'),sub=document.getElementById('hadesSub');
-    px=3;py=3;paint();
+    bumps++;px=3;py=3;paint();updateStat();
     if(flash){
       sub.textContent='冥河摆渡人替你把灯点了又熄：「还剩 '+(GIRLS.length-Object.keys(done).length)+' 位等你，不急。」';
       flash.hidden=false;flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');
@@ -6749,9 +7127,10 @@ if(brandband){
     px=nx;py=ny;steps++;
     const g=girlAt(px,py);
     if(g){
-      done[g.nm]=1;
+      done[g.nm]=1;marks.push(g.nm);
       log.innerHTML='<b>'+g.nm+'</b>：'+g.line;
       if(window.__burst)window.__burst(grid,'gem');
+      askPanel(g);updateStat();
       const left=GIRLS.length-Object.keys(done).length;   // 还剩几位没遇上
       if(left===0){
         wonAll=true;again.disabled=true;
@@ -6777,6 +7156,10 @@ if(brandband){
      —— 这才是黑蒂斯真正的精神：走成了也该有个落点，而不是弹一句「你通关了」就完。 */
   const ending=(won)=>{
     if(!won)return;
+    const spent=Math.max(1,Math.round((Date.now()-t0)/1000));
+    const sum=document.createElement('div');sum.className='mz-sum';
+    sum.textContent='这一趟：三位都见到了 · 印记 '+marks.length+'/3 · 步数 '+steps+' · 撞墙 '+bumps+' 次 · 用时 '+spent+' 秒';
+    log.appendChild(sum);
     const box=document.createElement('div');
     box.className='mz-choices';
     const stay=document.createElement('button');
@@ -6819,8 +7202,11 @@ if(brandband){
   const entry=document.getElementById('satchelMaze');
   if(entry){
     entry.addEventListener('click',()=>{
+      if(window.__mazeOpen()===false){
+        if(window.__mascotCheer)window.__mascotCheer('maze','门还没开——先去夜观台，把三颗星连成一条线。');
+        return;
+      }
       const sp=document.getElementById('satchelPanel');if(sp)sp.hidden=true;
-      window.__mazeOpen();
       if(window.__mascotCheer)window.__mascotCheer('maze','依芽替你推开了魔界的门。');
     });
   }
@@ -6840,16 +7226,22 @@ if(brandband){
     else return;
     e.preventDefault();e.stopPropagation();
   };
+  const glowOpen=()=>{try{return localStorage.getItem('hrn_constell_v1')==='1'}catch(_){return false}};
   window.__mazeOpen=()=>{
+    // 魔界门要等夜观台的星连成线才出现——不开局就给
+    if(!glowOpen())return false;
     maze.hidden=false;build();
     if(!bound){window.addEventListener('keydown',onKey,true);bound=true}
+    return true;
   };
+  // 连星之前，行囊里那扇门一直是关着的
+  (function(){if(entry&&glowOpen())entry.hidden=false;})();
   window.__mazeShut=()=>{maze.hidden=true};
   // 连星点亮后：不再硬弹迷阵（曾打断阅读），只提示入口已开，由玩家自己推门
   const beat=()=>{
     if(window.__constellWake)window.__constellWake();
     if(window.__mascotCheer)window.__mascotCheer('constell','魔界那扇门开了 —— 在行囊里。');
-    if(entry)try{entry.dataset.unlocked='1'}catch(_){}
+    if(entry){entry.hidden=false;try{entry.dataset.unlocked='1'}catch(_){}}
   };
   document.addEventListener('maze:unlock',beat);
   bestTxt();
@@ -6924,6 +7316,39 @@ updateTl();setTimeout(updateTl,400);setTimeout(updateTl,1200);
     el.classList.remove('on');el.style.removeProperty('--toast-lane');
     clearTimeout(timer);timer=setTimeout(pump,180);
   };
+}catch(e){}})();
+
+/* ---- 月亮 · 日月同辉 · 四时信物：全成就 → 月亮；全彩蛋 + 全成就 → 日月同辉 ---- */
+(function(){try{
+  const achCount=()=>{try{const o=JSON.parse(localStorage.getItem('hrn_ach_v1')||'null');
+    if(Array.isArray(o))return o.length;
+    if(o&&typeof o==='object')return Object.keys(o).length;return 0}catch(_){return 0}};
+  const tokFull=()=>{try{const s=JSON.parse(localStorage.getItem('hrn_satchel_v1')||'{}');
+    const t=(s&&s.tok)||{};return ['sprout','dew','ginkgo','snow'].every(k=>t[k])}catch(_){return false}};
+  const check=()=>{
+    if(tokFull()&&window.__achGain)window.__achGain('fourtok');
+    // 成就总数：优先用模块导出的，取不到就数星图上的星位
+    const domTotal=(()=>{const el=document.getElementById('achList');return el?el.children.length:0})();
+    // 不写死兜底数字：写死过一次 24，新增成就后实际 25，会在还差一枚时就提前点亮月亮。
+    // 取不到总数就当作 0（moonFull 因此为 false），宁可不亮，也别错亮。
+    const tot=(window.__achTotal?window.__achTotal():0)||domTotal||0;
+    const moonFull=tot>0&&achCount()>=tot;
+    const eggFull=document.body.classList.contains('sanctuary');
+    if(moonFull&&!document.body.classList.contains('moonlight')){
+      try{document.body.classList.add('moonlight')}catch(_){}
+      if(window.__spirit)window.__spirit('moon');
+      if(window.__msg)window.__msg('moon');
+      if(window.__mascotCheer)window.__mascotCheer('codex','星图满了 —— 月亮出来了。');
+    }
+    if(moonFull&&eggFull&&!document.body.classList.contains('sundog')){
+      try{document.body.classList.add('sundog')}catch(_){}
+      if(window.__spirit)window.__spirit('sun');
+      if(window.__msg)window.__msg('sundog');
+      if(window.__mascotCheer)window.__mascotCheer('codex','日月同辉 —— 你都走完了。');
+    }
+  };
+  window.__moonCheck=check;
+  setTimeout(check,1500);setInterval(check,1800);
 }catch(e){}})();
 </script>
 </body>
